@@ -1,4 +1,4 @@
-package com.example.quickquote
+package com.quickquote.app
 
 import io.flutter.embedding.android.FlutterActivity
 
