@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import '../theme/app_theme.dart';
+import '../widgets/exit_dialog.dart';
 import 'home_screen.dart';
 import 'saved_screen.dart';
 import 'settings_screen.dart';
@@ -14,7 +16,17 @@ class MainNavigation extends StatelessWidget {
     final isDarkMode = context.watch<ThemeProvider>().isDarkMode;
 
     // Use Theme.of(context) to inherit MaterialApp's theme animation
-    return CupertinoTabScaffold(
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (bool didPop, dynamic result) async {
+        if (didPop) return;
+        
+        final shouldExit = await ExitDialog.show(context);
+        if (shouldExit == true && context.mounted) {
+          SystemNavigator.pop();
+        }
+      },
+      child: CupertinoTabScaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       tabBar: CupertinoTabBar(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -61,6 +73,7 @@ class MainNavigation extends StatelessWidget {
             return const HomeScreen();
         }
       },
+      ),
     );
   }
 }
