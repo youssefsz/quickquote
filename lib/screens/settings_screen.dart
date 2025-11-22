@@ -99,24 +99,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   String? _encodeQueryParameters(Map<String, String> params) {
     return params.entries
-        .map((MapEntry<String, String> e) =>
-            '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
+        .map(
+          (MapEntry<String, String> e) =>
+              '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}',
+        )
         .join('&');
   }
 
   void _navigateToPrivacyPolicy() {
     Navigator.of(context).push(
-      CupertinoPageRoute(
-        builder: (context) => const PrivacyPolicyScreen(),
-      ),
+      CupertinoPageRoute(builder: (context) => const PrivacyPolicyScreen()),
     );
   }
 
   void _navigateToTermsOfService() {
     Navigator.of(context).push(
-      CupertinoPageRoute(
-        builder: (context) => const TermsOfServiceScreen(),
-      ),
+      CupertinoPageRoute(builder: (context) => const TermsOfServiceScreen()),
     );
   }
 
@@ -143,18 +141,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ),
       ),
       child: CupertinoButton(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 20.0,
-          vertical: 16.0,
-        ),
+        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0),
         onPressed: onTap,
         child: Row(
           children: [
-            Icon(
-              icon,
-              size: 24,
-              color: iconColor ?? theme.iconTheme.color,
-            ),
+            Icon(icon, size: 24, color: iconColor ?? theme.iconTheme.color),
             const SizedBox(width: 16),
             Expanded(
               child: Column(
