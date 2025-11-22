@@ -6,7 +6,6 @@ import 'package:swipe_cards/swipe_cards.dart';
 import '../providers/quote_provider.dart';
 import '../providers/saved_quotes_provider.dart';
 import '../theme/app_theme.dart';
-import '../widgets/quote_card.dart';
 import '../widgets/add_quote_modal.dart';
 import 'package:light_dark_theme_toggle/light_dark_theme_toggle.dart';
 
@@ -159,6 +158,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     );
                   }
 
+                  // Pre-build cards to eliminate delay when swiping fast
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    provider.prebuildCards(context);
+                  });
+
                   return SizedBox(
                     height: 500,
                     child: SwipeCards(
@@ -167,7 +171,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         // Use modulo to create infinite loop effect
                         final quoteIndex = index % provider.quotes.length;
                         final quote = provider.quotes[quoteIndex];
-                        return QuoteCard(quote: quote);
+                        // Use cached card to avoid rebuild delays
+                        return provider.getCachedCard(quote, context);
                       },
                       onStackFinished: () {
                         // This should rarely happen with our large pool

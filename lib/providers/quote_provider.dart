@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:swipe_cards/swipe_cards.dart';
 import '../models/quote.dart';
 import '../services/storage_service.dart';
+import '../widgets/quote_card.dart';
 
 class QuoteProvider with ChangeNotifier {
   final StorageService _storageService = StorageService();
@@ -10,6 +11,10 @@ class QuoteProvider with ChangeNotifier {
   MatchEngine? _matchEngine;
   bool _isLoading = true;
   int _currentIndex = 0;
+  // Cache for pre-built card widgets to avoid rebuild delays
+  final Map<String, Widget> _cardCache = {};
+  BuildContext? _cachedContext;
+  Brightness? _cachedThemeBrightness;
 
   List<Quote> get quotes => _quotes;
   MatchEngine? get matchEngine => _matchEngine;
@@ -48,6 +53,7 @@ class QuoteProvider with ChangeNotifier {
     // We'll create 3x the quotes to ensure smooth infinite scrolling
     final multiplier = _quotes.length < 10 ? 50 : 20;
     _swipeItems.clear();
+    _cardCache.clear(); // Clear cache when reinitializing
 
     for (int i = 0; i < multiplier; i++) {
       for (var quote in _quotes) {
@@ -69,6 +75,48 @@ class QuoteProvider with ChangeNotifier {
     }
 
     _matchEngine = MatchEngine(swipeItems: _swipeItems);
+  }
+
+  /// Pre-build and cache card widgets for a given context
+  /// This eliminates the delay when swiping fast
+  void prebuildCards(BuildContext context) {
+    if (_quotes.isEmpty) return;
+    
+    final currentBrightness = Theme.of(context).brightness;
+    // Rebuild cache if context or theme changed
+    if (_cachedContext != context || _cachedThemeBrightness != currentBrightness) {
+      _cachedContext = context;
+      _cachedThemeBrightness = currentBrightness;
+      _cardCache.clear();
+
+      // Pre-build all unique quote cards
+      for (var quote in _quotes) {
+        if (!_cardCache.containsKey(quote.id)) {
+          _cardCache[quote.id] = RepaintBoundary(
+            child: QuoteCard(quote: quote),
+          );
+        }
+      }
+    }
+  }
+
+  /// Get a cached card widget for a quote, or build it if not cached
+  Widget getCachedCard(Quote quote, BuildContext context) {
+    // Update cache if context or theme changed
+    final currentBrightness = Theme.of(context).brightness;
+    if (_cachedContext != context || _cachedThemeBrightness != currentBrightness) {
+      prebuildCards(context);
+    }
+
+    // Return cached widget if available
+    if (_cardCache.containsKey(quote.id)) {
+      return _cardCache[quote.id]!;
+    }
+
+    // Fallback: build on demand if not cached
+    return RepaintBoundary(
+      child: QuoteCard(quote: quote),
+    );
   }
 
   void _onSwipe() {
@@ -146,6 +194,13 @@ class QuoteProvider with ChangeNotifier {
     final newQuote = Quote(text: text, author: author);
     await _storageService.addQuote(newQuote);
     _quotes.add(newQuote);
+
+    // Pre-build and cache the new card if context is available
+    if (_cachedContext != null) {
+      _cardCache[newQuote.id] = RepaintBoundary(
+        child: QuoteCard(quote: newQuote),
+      );
+    }
 
     // Add to swipe items
     final newSwipeItem = SwipeItem(
