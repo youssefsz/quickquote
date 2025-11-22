@@ -93,7 +93,13 @@ class StorageService {
 
     // Check if quote is already saved (using equality operator)
     if (!savedQuotes.contains(quote)) {
-      savedQuotes.add(quote);
+      // Create a new quote with the current timestamp
+      final quoteWithDate = Quote(
+        text: quote.text,
+        author: quote.author,
+        savedDate: DateTime.now(),
+      );
+      savedQuotes.add(quoteWithDate);
       await _saveSavedQuotes(savedQuotes);
     }
   }

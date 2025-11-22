@@ -19,6 +19,8 @@ dependencies:
   light_dark_theme_toggle: ^1.1.2
   circular_theme_reveal: ^1.0.2
   rename: ^3.1.0
+  package_info_plus: ^8.0.0
+  url_launcher: ^6.3.1
 
 dev_dependencies:
   flutter_test:
