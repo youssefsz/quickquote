@@ -23,7 +23,6 @@ class SavedQuotesProvider with ChangeNotifier {
     notifyListeners();
 
     _savedQuotes = await _storageService.getSavedQuotes();
-    debugPrint('📚 Loaded ${_savedQuotes.length} saved quotes');
 
     _isLoading = false;
     notifyListeners();
@@ -31,13 +30,8 @@ class SavedQuotesProvider with ChangeNotifier {
 
   /// Save a quote to favorites
   Future<void> saveQuote(Quote quote) async {
-    debugPrint(
-      '💾 Saving quote: "${quote.text.length > 30 ? quote.text.substring(0, 30) : quote.text}..."',
-    );
-
     // Check if already saved
     if (_savedQuotes.any((q) => q.id == quote.id)) {
-      debugPrint('⚠️ Quote already saved, skipping');
       return;
     }
 
@@ -45,21 +39,15 @@ class SavedQuotesProvider with ChangeNotifier {
 
     // Update local list immediately
     _savedQuotes.insert(0, quote); // Add to beginning for newest first
-    debugPrint('✅ Quote saved! Total saved: ${_savedQuotes.length}');
     notifyListeners();
   }
 
   /// Remove a quote from favorites
   Future<void> removeQuote(Quote quote) async {
-    debugPrint(
-      '🗑️ Removing quote: "${quote.text.length > 30 ? quote.text.substring(0, 30) : quote.text}..."',
-    );
-
     await _storageService.removeQuoteFromFavorites(quote);
 
     // Update local list
     _savedQuotes.removeWhere((q) => q.id == quote.id);
-    debugPrint('✅ Quote removed! Total saved: ${_savedQuotes.length}');
     notifyListeners();
   }
 
