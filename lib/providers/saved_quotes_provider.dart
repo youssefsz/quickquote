@@ -13,7 +13,7 @@ class SavedQuotesProvider with ChangeNotifier {
   String _searchQuery = '';
   SortOrder _sortOrder = SortOrder.newestFirst;
   Set<String> _selectedQuoteIds = {};
-  int _itemsPerPage = 10;
+  final int _itemsPerPage = 10;
   int _currentDisplayCount = 10;
 
   List<Quote> get savedQuotes => _savedQuotes;

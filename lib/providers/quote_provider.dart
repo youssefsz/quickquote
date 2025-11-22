@@ -7,7 +7,7 @@ import '../widgets/quote_card.dart';
 class QuoteProvider with ChangeNotifier {
   final StorageService _storageService = StorageService();
   List<Quote> _quotes = [];
-  List<SwipeItem> _swipeItems = [];
+  final List<SwipeItem> _swipeItems = [];
   MatchEngine? _matchEngine;
   bool _isLoading = true;
   int _currentIndex = 0;

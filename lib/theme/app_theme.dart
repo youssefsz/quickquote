@@ -27,8 +27,6 @@ class AppTheme {
       colorScheme: const ColorScheme.light(
         primary: AppColors.lightAccent,
         surface: AppColors.lightSurface,
-        background: AppColors.lightBackground,
-        onBackground: AppColors.lightTextPrimary,
         onSurface: AppColors.lightTextPrimary,
       ),
       textTheme: GoogleFonts.interTextTheme().apply(
@@ -53,8 +51,6 @@ class AppTheme {
       colorScheme: const ColorScheme.dark(
         primary: AppColors.darkAccent,
         surface: AppColors.darkSurface,
-        background: AppColors.darkBackground,
-        onBackground: AppColors.darkTextPrimary,
         onSurface: AppColors.darkTextPrimary,
       ),
       textTheme: GoogleFonts.interTextTheme(ThemeData.dark().textTheme).apply(

@@ -40,8 +40,8 @@ class _SavedScreenState extends State<SavedScreen> {
 
     // Listen to search focus changes
     _searchFocusNode.addListener(() {
-      if (!_searchFocusNode.hasFocus && 
-          _searchController.text.isEmpty && 
+      if (!_searchFocusNode.hasFocus &&
+          _searchController.text.isEmpty &&
           _isSearchActive) {
         setState(() {
           _isSearchActive = false;
@@ -89,7 +89,7 @@ class _SavedScreenState extends State<SavedScreen> {
 
   void _showFilterOptions(BuildContext context) {
     final provider = context.read<SavedQuotesProvider>();
-    
+
     showCupertinoModalPopup(
       context: context,
       builder: (context) => CupertinoActionSheet(
@@ -115,10 +115,7 @@ class _SavedScreenState extends State<SavedScreen> {
                 if (provider.sortOrder == SortOrder.newestFirst)
                   const Padding(
                     padding: EdgeInsets.only(left: 8),
-                    child: Icon(
-                      CupertinoIcons.check_mark,
-                      size: 18,
-                    ),
+                    child: Icon(CupertinoIcons.check_mark, size: 18),
                   ),
               ],
             ),
@@ -143,10 +140,7 @@ class _SavedScreenState extends State<SavedScreen> {
                 if (provider.sortOrder == SortOrder.oldestFirst)
                   const Padding(
                     padding: EdgeInsets.only(left: 8),
-                    child: Icon(
-                      CupertinoIcons.check_mark,
-                      size: 18,
-                    ),
+                    child: Icon(CupertinoIcons.check_mark, size: 18),
                   ),
               ],
             ),
@@ -175,7 +169,7 @@ class _SavedScreenState extends State<SavedScreen> {
   Future<void> _showClearAllConfirmation(BuildContext context) async {
     // Get provider reference before async operation
     final provider = context.read<SavedQuotesProvider>();
-    
+
     final confirm = await showCupertinoDialog<bool>(
       context: context,
       builder: (context) => CupertinoAlertDialog(
@@ -253,9 +247,7 @@ class _SavedScreenState extends State<SavedScreen> {
                 return LightDarkThemeToggle(
                   value: !isDarkMode,
                   onChanged: (_) async {
-                    final overlay = CircularThemeRevealOverlay.of(
-                      context,
-                    );
+                    final overlay = CircularThemeRevealOverlay.of(context);
                     final center =
                         CircularThemeRevealOverlay.getCenterFromContext(
                           context,
@@ -315,10 +307,7 @@ class _SavedScreenState extends State<SavedScreen> {
                 color: theme.textTheme.bodyMedium?.color?.withOpacity(0.4),
               ),
               style: theme.textTheme.bodyMedium,
-              padding: const EdgeInsets.symmetric(
-                horizontal: 12,
-                vertical: 10,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
               decoration: const BoxDecoration(),
               onChanged: (value) {
                 provider.setSearchQuery(value);
@@ -387,13 +376,16 @@ class _SavedScreenState extends State<SavedScreen> {
                   return FadeTransition(
                     opacity: animation,
                     child: SlideTransition(
-                      position: Tween<Offset>(
-                        begin: const Offset(0.1, 0),
-                        end: Offset.zero,
-                      ).animate(CurvedAnimation(
-                        parent: animation,
-                        curve: Curves.easeOut,
-                      )),
+                      position:
+                          Tween<Offset>(
+                            begin: const Offset(0.1, 0),
+                            end: Offset.zero,
+                          ).animate(
+                            CurvedAnimation(
+                              parent: animation,
+                              curve: Curves.easeOut,
+                            ),
+                          ),
                       child: child,
                     ),
                   );
@@ -487,17 +479,13 @@ class _SavedScreenState extends State<SavedScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(
-            isSearchEmpty
-                ? CupertinoIcons.search
-                : CupertinoIcons.heart,
+            isSearchEmpty ? CupertinoIcons.search : CupertinoIcons.heart,
             size: 80,
             color: theme.textTheme.bodyMedium?.color?.withOpacity(0.3),
           ),
           const SizedBox(height: 16),
           Text(
-            isSearchEmpty
-                ? 'No quotes found'
-                : 'No saved quotes yet',
+            isSearchEmpty ? 'No quotes found' : 'No saved quotes yet',
             style: theme.textTheme.titleMedium?.copyWith(
               color: theme.textTheme.bodyMedium?.color?.withOpacity(0.5),
             ),
@@ -674,8 +662,8 @@ class _SavedQuoteCard extends StatelessWidget {
             color: isSelected
                 ? theme.colorScheme.primary
                 : (isDarkMode
-                    ? Colors.white.withOpacity(0.08)
-                    : Colors.black.withOpacity(0.06)),
+                      ? Colors.white.withOpacity(0.08)
+                      : Colors.black.withOpacity(0.06)),
             width: isSelected ? 2 : 1,
           ),
         ),
@@ -729,7 +717,7 @@ class _SavedQuoteCard extends StatelessWidget {
                               color: isSelected
                                   ? theme.colorScheme.primary
                                   : theme.textTheme.bodyMedium?.color
-                                      ?.withOpacity(0.3),
+                                        ?.withOpacity(0.3),
                               size: 24,
                             ),
                           ),
@@ -755,18 +743,23 @@ class _SavedQuoteCard extends StatelessWidget {
 
                               // Author and delete button row
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Expanded(
                                     child: Text(
                                       '— ${quote.author}',
-                                      style: theme.textTheme.bodyMedium?.copyWith(
-                                        color: theme.textTheme.bodyMedium?.color
-                                            ?.withOpacity(0.6),
-                                        fontWeight: FontWeight.w500,
-                                        letterSpacing: 0.3,
-                                        decoration: TextDecoration.none,
-                                      ),
+                                      style: theme.textTheme.bodyMedium
+                                          ?.copyWith(
+                                            color: theme
+                                                .textTheme
+                                                .bodyMedium
+                                                ?.color
+                                                ?.withOpacity(0.6),
+                                            fontWeight: FontWeight.w500,
+                                            letterSpacing: 0.3,
+                                            decoration: TextDecoration.none,
+                                          ),
                                     ),
                                   ),
                                   // Delete button (only when not in selection mode)
@@ -775,8 +768,8 @@ class _SavedQuoteCard extends StatelessWidget {
                                       onTap: () async {
                                         final confirm =
                                             await _showDeleteConfirmation(
-                                          context,
-                                        );
+                                              context,
+                                            );
                                         if (confirm == true) {
                                           onDelete();
                                         }

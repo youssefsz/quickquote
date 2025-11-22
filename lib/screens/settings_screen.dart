@@ -35,9 +35,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   Future<void> _launchSupportEmail() async {
-    final String email = 'support@quickquote.app';
-    final String subject = 'QuickQuote Support Request';
-    final String body = 'Please describe your issue or question here...';
+    const String email = 'support@quickquote.app';
+    const String subject = 'QuickQuote Support Request';
+    const String body = 'Please describe your issue or question here...';
 
     // Create mailto URI with properly encoded query parameters
     final Uri emailUri = Uri(
@@ -264,7 +264,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     const Spacer(),
                     CupertinoSwitch(
                       value: isDarkMode,
-                      activeColor: AppColors.darkAccent,
+                      activeTrackColor: AppColors.darkAccent,
                       onChanged: (value) {
                         context.read<ThemeProvider>().toggleTheme();
                       },
