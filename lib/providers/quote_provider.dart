@@ -19,14 +19,6 @@ class QuoteProvider with ChangeNotifier {
   List<Quote> get quotes => _quotes;
   MatchEngine? get matchEngine => _matchEngine;
   bool get isLoading => _isLoading;
-  
-  // Track the current item index in the MatchEngine
-  int? _currentMatchEngineIndex;
-  
-  /// Get the swipe items list (for itemBuilder access)
-  List<SwipeItem> getSwipeItems() {
-    return _swipeItems;
-  }
 
   QuoteProvider() {
     _loadQuotes();
@@ -57,9 +49,9 @@ class QuoteProvider with ChangeNotifier {
   void _initializeSwipeItems() {
     if (_quotes.isEmpty) return;
 
-    // Create a reasonable pool of swipe items (not too many to avoid performance issues)
-    // Start with a smaller pool and add more dynamically as needed
-    final multiplier = _quotes.length < 10 ? 10 : 5;
+    // Create a large pool of swipe items for infinite effect
+    // We'll create 3x the quotes to ensure smooth infinite scrolling
+    final multiplier = _quotes.length < 10 ? 50 : 20;
     _swipeItems.clear();
     _cardCache.clear(); // Clear cache when reinitializing
 
@@ -83,12 +75,6 @@ class QuoteProvider with ChangeNotifier {
     }
 
     _matchEngine = MatchEngine(swipeItems: _swipeItems);
-    
-    // Pre-build cards if context is already available
-    // This helps prevent blank screens on initial load
-    if (_cachedContext != null) {
-      prebuildCards(_cachedContext!);
-    }
   }
 
   /// Pre-build and cache card widgets for a given context
@@ -102,35 +88,14 @@ class QuoteProvider with ChangeNotifier {
       _cachedContext = context;
       _cachedThemeBrightness = currentBrightness;
       _cardCache.clear();
-    }
 
-    // Pre-build all unique quote cards to ensure they're ready
-    // This prevents blank screens when swiping
-    for (var quote in _quotes) {
-      if (!_cardCache.containsKey(quote.id)) {
-        _cardCache[quote.id] = RepaintBoundary(
-          child: QuoteCard(quote: quote),
-        );
-      }
-    }
-  }
-  
-  /// Pre-build cards for the next N items in the swipe stack
-  /// This ensures smooth transitions without blank screens
-  void prebuildNextCards(BuildContext context, int count) {
-    if (_swipeItems.isEmpty || _quotes.isEmpty) return;
-    
-    prebuildCards(context); // Ensure all unique quotes are cached
-    
-    // Pre-build cards for the next several items in the stack
-    // This helps when swiping quickly
-    final currentIndex = _currentIndex;
-    for (int i = 0; i < count && (currentIndex + i) < _swipeItems.length; i++) {
-      final quote = getQuoteFromSwipeIndex(currentIndex + i);
-      if (quote != null && !_cardCache.containsKey(quote.id)) {
-        _cardCache[quote.id] = RepaintBoundary(
-          child: QuoteCard(quote: quote),
-        );
+      // Pre-build all unique quote cards
+      for (var quote in _quotes) {
+        if (!_cardCache.containsKey(quote.id)) {
+          _cardCache[quote.id] = RepaintBoundary(
+            child: QuoteCard(quote: quote),
+          );
+        }
       }
     }
   }
@@ -154,62 +119,12 @@ class QuoteProvider with ChangeNotifier {
     );
   }
 
-  /// Get the quote from a swipe item index
-  /// This ensures we correctly map the index to the actual SwipeItem content
-  Quote? getQuoteFromSwipeIndex(int index) {
-    if (index < 0 || index >= _swipeItems.length) {
-      return null;
-    }
-    final swipeItem = _swipeItems[index];
-    return swipeItem.content as Quote?;
-  }
-  
-  /// Update the current item being displayed (called from itemChanged callback)
-  void updateCurrentItem(SwipeItem item, int index) {
-    _currentMatchEngineIndex = index;
-    // Find the index in our _swipeItems list
-    final itemIndex = _swipeItems.indexOf(item);
-    if (itemIndex != -1) {
-      _currentIndex = itemIndex;
-      
-      // CRITICAL: Pre-build the next 3-5 cards immediately when item changes
-      // This ensures they're ready before the swipe animation completes
-      if (_cachedContext != null) {
-        // Pre-build cards for the next items in the stack (index + 1, +2, +3, etc.)
-        for (int i = 1; i <= 5 && (itemIndex + i) < _swipeItems.length; i++) {
-          final nextQuote = getQuoteFromSwipeIndex(itemIndex + i);
-          if (nextQuote != null && !_cardCache.containsKey(nextQuote.id)) {
-            _cardCache[nextQuote.id] = RepaintBoundary(
-              child: QuoteCard(quote: nextQuote),
-            );
-          }
-        }
-      }
-    }
-  }
-  
-  /// Get the current item index in the MatchEngine
-  int? getCurrentItemIndex() {
-    return _currentMatchEngineIndex;
-  }
-  
-  /// Add more items to the swipe stack (public for onStackFinished)
-  void addMoreItems() {
-    _addMoreItems();
-  }
-
   void _onSwipe() {
     _currentIndex++;
     _saveCurrentPosition();
 
-    // Pre-build next cards to prevent blank screens
-    if (_cachedContext != null) {
-      prebuildNextCards(_cachedContext!, 10); // Pre-build next 10 cards
-    }
-
-    // Add more items earlier to ensure we always have enough
-    // This prevents blank screens when the stack runs low
-    if (_currentIndex >= _swipeItems.length ~/ 3) {
+    // When we're halfway through, seamlessly add more items
+    if (_currentIndex >= _swipeItems.length ~/ 2) {
       _addMoreItems();
     }
   }
@@ -253,27 +168,6 @@ class QuoteProvider with ChangeNotifier {
           },
         ),
       );
-    }
-    
-    // CRITICAL: Recreate MatchEngine with updated swipeItems list
-    // The MatchEngine needs to know about the new items
-    // Note: Recreating MatchEngine will reset to the first item, but this ensures
-    // the new items are available. The user will continue from where they were
-    // since we track _currentIndex separately.
-    if (_matchEngine != null) {
-      _matchEngine = MatchEngine(swipeItems: _swipeItems);
-      notifyListeners();
-    }
-    
-    // Pre-build cards for the newly added items if context is available
-    if (_cachedContext != null) {
-      for (var quote in _quotes) {
-        if (!_cardCache.containsKey(quote.id)) {
-          _cardCache[quote.id] = RepaintBoundary(
-            child: QuoteCard(quote: quote),
-          );
-        }
-      }
     }
   }
 
