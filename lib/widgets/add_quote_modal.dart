@@ -70,7 +70,7 @@ class _AddQuoteModalState extends State<AddQuoteModal> {
                 hintText: 'Enter the quote...',
                 filled: true,
                 fillColor: isDark
-                    ? Colors.white.withOpacity(0.1)
+                    ? Colors.white.withValues(alpha: 0.1)
                     : Colors.grey.shade100,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(16),
@@ -92,7 +92,7 @@ class _AddQuoteModalState extends State<AddQuoteModal> {
                 hintText: 'Author (Optional)',
                 filled: true,
                 fillColor: isDark
-                    ? Colors.white.withOpacity(0.1)
+                    ? Colors.white.withValues(alpha: 0.1)
                     : Colors.grey.shade100,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(16),

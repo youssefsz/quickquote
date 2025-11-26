@@ -85,7 +85,7 @@ class _HomeScreenState extends State<HomeScreen> {
         titleText: "Swipe to Explore",
         titleTextColor: colorScheme.onSurface,
         bodyText: "Swipe Right to Save a quote.\nSwipe Left to Skip it.",
-        bodyTextColor: colorScheme.onSurface.withOpacity(0.8),
+        bodyTextColor: colorScheme.onSurface.withValues(alpha: 0.8),
         labelBoxPadding: const EdgeInsets.all(16.0),
         labelBoxDecoration: BoxDecoration(
           shape: BoxShape.rectangle,
@@ -94,7 +94,7 @@ class _HomeScreenState extends State<HomeScreen> {
           border: Border.all(color: colorScheme.primary, width: 2.0),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.1),
+              color: Colors.black.withValues(alpha: 0.1),
               blurRadius: 8,
               offset: const Offset(0, 4),
             ),
@@ -104,7 +104,7 @@ class _HomeScreenState extends State<HomeScreen> {
         hasArrow: true,
         hasLabelBox: true,
         fullscreen: true,
-        overlayColor: Colors.black.withOpacity(0.8),
+        overlayColor: Colors.black.withValues(alpha: 0.8),
         overlayBehavior: HitTestBehavior.opaque,
       ),
       OnboardingStep(
@@ -112,7 +112,7 @@ class _HomeScreenState extends State<HomeScreen> {
         titleText: "Skip Button",
         titleTextColor: colorScheme.onSurface,
         bodyText: "Tap here to skip the current quote.",
-        bodyTextColor: colorScheme.onSurface.withOpacity(0.8),
+        bodyTextColor: colorScheme.onSurface.withValues(alpha: 0.8),
         labelBoxPadding: const EdgeInsets.all(16.0),
         labelBoxDecoration: BoxDecoration(
           shape: BoxShape.rectangle,
@@ -124,14 +124,14 @@ class _HomeScreenState extends State<HomeScreen> {
         hasArrow: true,
         hasLabelBox: true,
         fullscreen: true,
-        overlayColor: Colors.black.withOpacity(0.8),
+        overlayColor: Colors.black.withValues(alpha: 0.8),
       ),
       OnboardingStep(
         focusNode: focusNodes[2],
         titleText: "Save Button",
         titleTextColor: colorScheme.onSurface,
         bodyText: "Tap here to save the quote to your collection.",
-        bodyTextColor: colorScheme.onSurface.withOpacity(0.8),
+        bodyTextColor: colorScheme.onSurface.withValues(alpha: 0.8),
         labelBoxPadding: const EdgeInsets.all(16.0),
         labelBoxDecoration: BoxDecoration(
           shape: BoxShape.rectangle,
@@ -143,7 +143,7 @@ class _HomeScreenState extends State<HomeScreen> {
         hasArrow: true,
         hasLabelBox: true,
         fullscreen: true,
-        overlayColor: Colors.black.withOpacity(0.8),
+        overlayColor: Colors.black.withValues(alpha: 0.8),
       ),
     ];
 
@@ -248,7 +248,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 size: 80,
                                 color: Theme.of(
                                   context,
-                                ).textTheme.bodyMedium?.color?.withOpacity(0.3),
+                                ).textTheme.bodyMedium?.color?.withValues(alpha: 0.3),
                               ),
                               const SizedBox(height: 16),
                               Text(
@@ -259,7 +259,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           .textTheme
                                           .bodyMedium
                                           ?.color
-                                          ?.withOpacity(0.5),
+                                          ?.withValues(alpha: 0.5),
                                     ),
                               ),
                               const SizedBox(height: 8),
@@ -271,7 +271,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           .textTheme
                                           .bodyMedium
                                           ?.color
-                                          ?.withOpacity(0.4),
+                                          ?.withValues(alpha: 0.4),
                                     ),
                               ),
                             ],
@@ -315,7 +315,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 vertical: 12,
                               ),
                               decoration: BoxDecoration(
-                                color: Colors.green.withOpacity(0.9),
+                                color: Colors.green.withValues(alpha: 0.9),
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               child: const Text(
@@ -334,7 +334,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 vertical: 12,
                               ),
                               decoration: BoxDecoration(
-                                color: Colors.red.withOpacity(0.9),
+                                color: Colors.red.withValues(alpha: 0.9),
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               child: const Text(
@@ -387,7 +387,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ?.nope();
                             },
                             borderRadius: BorderRadius.circular(18),
-                            color: Colors.red.withOpacity(0.9),
+                            color: Colors.red.withValues(alpha: 0.9),
                             child: const Text(
                               'Skip',
                               style: TextStyle(
@@ -417,7 +417,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ?.like();
                             },
                             borderRadius: BorderRadius.circular(18),
-                            color: Colors.green.withOpacity(0.9),
+                            color: Colors.green.withValues(alpha: 0.9),
                             child: const Text(
                               'Save',
                               style: TextStyle(

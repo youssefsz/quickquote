@@ -294,8 +294,8 @@ class _SavedScreenState extends State<SavedScreen> {
               borderRadius: BorderRadius.circular(12),
               border: Border.all(
                 color: isDarkMode
-                    ? Colors.white.withOpacity(0.1)
-                    : Colors.black.withOpacity(0.05),
+                    ? Colors.white.withValues(alpha: 0.1)
+                    : Colors.black.withValues(alpha: 0.05),
                 width: 1,
               ),
             ),
@@ -304,7 +304,7 @@ class _SavedScreenState extends State<SavedScreen> {
               focusNode: _searchFocusNode,
               placeholder: 'Search quotes or authors...',
               placeholderStyle: theme.textTheme.bodyMedium?.copyWith(
-                color: theme.textTheme.bodyMedium?.color?.withOpacity(0.4),
+                color: theme.textTheme.bodyMedium?.color?.withValues(alpha: 0.4),
               ),
               style: theme.textTheme.bodyMedium,
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
@@ -325,7 +325,7 @@ class _SavedScreenState extends State<SavedScreen> {
                 child: Icon(
                   CupertinoIcons.search,
                   size: 20,
-                  color: theme.textTheme.bodyMedium?.color?.withOpacity(0.5),
+                  color: theme.textTheme.bodyMedium?.color?.withValues(alpha: 0.5),
                 ),
               ),
             ),
@@ -481,13 +481,13 @@ class _SavedScreenState extends State<SavedScreen> {
           Icon(
             isSearchEmpty ? CupertinoIcons.search : CupertinoIcons.heart,
             size: 80,
-            color: theme.textTheme.bodyMedium?.color?.withOpacity(0.3),
+            color: theme.textTheme.bodyMedium?.color?.withValues(alpha: 0.3),
           ),
           const SizedBox(height: 16),
           Text(
             isSearchEmpty ? 'No quotes found' : 'No saved quotes yet',
             style: theme.textTheme.titleMedium?.copyWith(
-              color: theme.textTheme.bodyMedium?.color?.withOpacity(0.5),
+              color: theme.textTheme.bodyMedium?.color?.withValues(alpha: 0.5),
             ),
           ),
           const SizedBox(height: 8),
@@ -496,7 +496,7 @@ class _SavedScreenState extends State<SavedScreen> {
                 ? 'Try a different search term'
                 : 'Save quotes from the home screen',
             style: theme.textTheme.bodyMedium?.copyWith(
-              color: theme.textTheme.bodyMedium?.color?.withOpacity(0.4),
+              color: theme.textTheme.bodyMedium?.color?.withValues(alpha: 0.4),
             ),
           ),
         ],
@@ -585,8 +585,8 @@ class _SelectionActionBar extends StatelessWidget {
         border: Border(
           top: BorderSide(
             color: isDarkMode
-                ? Colors.white.withOpacity(0.1)
-                : Colors.black.withOpacity(0.05),
+                ? Colors.white.withValues(alpha: 0.1)
+                : Colors.black.withValues(alpha: 0.05),
             width: 1,
           ),
         ),
@@ -610,7 +610,7 @@ class _SelectionActionBar extends StatelessWidget {
             const SizedBox(width: 8),
             CupertinoButton(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              color: Colors.red.withOpacity(0.9),
+              color: Colors.red.withValues(alpha: 0.9),
               borderRadius: BorderRadius.circular(12),
               onPressed: onDelete,
               child: const Text(
@@ -662,8 +662,8 @@ class _SavedQuoteCard extends StatelessWidget {
             color: isSelected
                 ? theme.colorScheme.primary
                 : (isDarkMode
-                      ? Colors.white.withOpacity(0.08)
-                      : Colors.black.withOpacity(0.06)),
+                      ? Colors.white.withValues(alpha: 0.08)
+                      : Colors.black.withValues(alpha: 0.06)),
             width: isSelected ? 2 : 1,
           ),
         ),
@@ -682,7 +682,7 @@ class _SavedQuoteCard extends StatelessWidget {
                   padding: const EdgeInsets.only(right: 24),
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
-                      colors: [Colors.red.withOpacity(0.8), Colors.red],
+                      colors: [Colors.red.withValues(alpha: 0.8), Colors.red],
                     ),
                   ),
                   child: const Icon(
@@ -717,7 +717,7 @@ class _SavedQuoteCard extends StatelessWidget {
                               color: isSelected
                                   ? theme.colorScheme.primary
                                   : theme.textTheme.bodyMedium?.color
-                                        ?.withOpacity(0.3),
+                                        ?.withValues(alpha: 0.3),
                               size: 24,
                             ),
                           ),
@@ -755,7 +755,7 @@ class _SavedQuoteCard extends StatelessWidget {
                                                 .textTheme
                                                 .bodyMedium
                                                 ?.color
-                                                ?.withOpacity(0.6),
+                                                ?.withValues(alpha: 0.6),
                                             fontWeight: FontWeight.w500,
                                             letterSpacing: 0.3,
                                             decoration: TextDecoration.none,
@@ -779,7 +779,7 @@ class _SavedQuoteCard extends StatelessWidget {
                                         padding: const EdgeInsets.all(12),
                                         child: Icon(
                                           CupertinoIcons.heart_fill,
-                                          color: Colors.red.withOpacity(0.8),
+                                          color: Colors.red.withValues(alpha: 0.8),
                                           size: 22,
                                         ),
                                       ),
@@ -854,7 +854,7 @@ class _QuoteDetailModal extends StatelessWidget {
               width: 40,
               height: 5,
               decoration: BoxDecoration(
-                color: theme.textTheme.bodyMedium?.color?.withOpacity(0.2),
+                color: theme.textTheme.bodyMedium?.color?.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(3),
               ),
             ),
@@ -871,7 +871,7 @@ class _QuoteDetailModal extends StatelessWidget {
                   Icon(
                     Icons.format_quote_rounded,
                     size: 60,
-                    color: theme.colorScheme.primary.withOpacity(0.5),
+                    color: theme.colorScheme.primary.withValues(alpha: 0.5),
                   ),
                   const SizedBox(height: 32),
                   Text(
@@ -889,7 +889,7 @@ class _QuoteDetailModal extends StatelessWidget {
                     '— ${quote.author}',
                     textAlign: TextAlign.center,
                     style: theme.textTheme.titleMedium?.copyWith(
-                      color: theme.textTheme.bodyMedium?.color?.withOpacity(
+                      color: theme.textTheme.bodyMedium?.color?.withValues(alpha: 
                         0.6,
                       ),
                       fontWeight: FontWeight.w500,

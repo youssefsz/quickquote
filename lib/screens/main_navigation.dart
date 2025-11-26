@@ -30,8 +30,8 @@ class MainNavigation extends StatelessWidget {
         border: Border(
           top: BorderSide(
             color: isDarkMode
-                ? Colors.white.withOpacity(0.1)
-                : Colors.black.withOpacity(0.1),
+                ? Colors.white.withValues(alpha: 0.1)
+                : Colors.black.withValues(alpha: 0.1),
             width: 0.5,
           ),
         ),

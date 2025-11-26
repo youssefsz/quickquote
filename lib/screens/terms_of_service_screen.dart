@@ -189,8 +189,8 @@ class TermsOfServiceScreen extends StatelessWidget {
           style: theme.textTheme.bodyMedium?.copyWith(
             height: 1.6,
             color: isDarkMode
-                ? AppColors.darkTextPrimary.withOpacity(0.9)
-                : AppColors.lightTextPrimary.withOpacity(0.9),
+                ? AppColors.darkTextPrimary.withValues(alpha: 0.9)
+                : AppColors.lightTextPrimary.withValues(alpha: 0.9),
           ),
         ),
       ],

@@ -135,8 +135,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
           color: isDarkMode
-              ? Colors.white.withOpacity(0.1)
-              : Colors.black.withOpacity(0.05),
+              ? Colors.white.withValues(alpha: 0.1)
+              : Colors.black.withValues(alpha: 0.05),
           width: 1,
         ),
       ),
@@ -213,8 +213,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   borderRadius: BorderRadius.circular(16),
                   border: Border.all(
                     color: isDarkMode
-                        ? Colors.white.withOpacity(0.1)
-                        : Colors.black.withOpacity(0.05),
+                        ? Colors.white.withValues(alpha: 0.1)
+                        : Colors.black.withValues(alpha: 0.05),
                     width: 1,
                   ),
                 ),
@@ -325,7 +325,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     Icon(
                       CupertinoIcons.quote_bubble,
                       size: 48,
-                      color: theme.iconTheme.color?.withOpacity(0.3),
+                      color: theme.iconTheme.color?.withValues(alpha: 0.3),
                     ),
                     const SizedBox(height: 12),
                     Text(

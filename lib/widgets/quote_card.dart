@@ -19,8 +19,8 @@ class QuoteCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(30),
         border: Border.all(
           color: Theme.of(context).brightness == Brightness.dark
-              ? Colors.white.withOpacity(0.1)
-              : Colors.black.withOpacity(0.08),
+              ? Colors.white.withValues(alpha: 0.1)
+              : Colors.black.withValues(alpha: 0.08),
           width: 1,
         ),
       ),
@@ -31,7 +31,7 @@ class QuoteCard extends StatelessWidget {
           Icon(
             Icons.format_quote_rounded,
             size: 48,
-            color: Theme.of(context).colorScheme.primary.withOpacity(0.5),
+            color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.5),
           ),
           const SizedBox(height: 32),
           Expanded(
@@ -56,7 +56,7 @@ class QuoteCard extends StatelessWidget {
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
               color: Theme.of(
                 context,
-              ).textTheme.bodyMedium?.color?.withOpacity(0.6),
+              ).textTheme.bodyMedium?.color?.withValues(alpha: 0.6),
               fontWeight: FontWeight.w500,
               letterSpacing: 0.5,
             ),
