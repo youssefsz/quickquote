@@ -22,7 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final GlobalKey<OnboardingState> onboardingKey = GlobalKey<OnboardingState>();
   late List<FocusNode> focusNodes;
   // Set to true to test onboarding on every restart
-  final bool _alwaysShowOnboarding = false;
+  final bool _alwaysShowOnboarding = true;
 
   @override
   void initState() {
