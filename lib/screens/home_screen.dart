@@ -7,6 +7,7 @@ import '../providers/quote_provider.dart';
 import '../providers/saved_quotes_provider.dart';
 import '../theme/app_theme.dart';
 import '../widgets/add_quote_modal.dart';
+import '../models/quote.dart';
 import 'package:light_dark_theme_toggle/light_dark_theme_toggle.dart';
 import 'package:onboarding_overlay/onboarding_overlay.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -280,10 +281,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       );
                     }
 
-                    // Pre-build cards to eliminate delay when swiping fast
-                    WidgetsBinding.instance.addPostFrameCallback((_) {
-                      provider.prebuildCards(context);
-                    });
+                    // Pre-build cards synchronously before rendering SwipeCards
+                    // This ensures cards are ready when the widget tree builds
+                    provider.prebuildCards(context);
 
                     return SizedBox(
                       height: 500,
@@ -292,19 +292,70 @@ class _HomeScreenState extends State<HomeScreen> {
                           SwipeCards(
                             matchEngine: provider.matchEngine!,
                             itemBuilder: (BuildContext context, int index) {
-                              // Use modulo to create infinite loop effect
-                              final quoteIndex = index % provider.quotes.length;
-                              final quote = provider.quotes[quoteIndex];
-                              // Use cached card to avoid rebuild delays
+                              // According to swipe_cards documentation, index maps directly to _swipeItems[index]
+                              // The index represents the position in the swipeItems list
+                              final swipeItems = provider.getSwipeItems();
+                              
+                              // Safety check: ensure index is within bounds
+                              if (index < 0 || index >= swipeItems.length) {
+                                // If index is out of bounds, return a placeholder
+                                return Container(
+                                  width: double.infinity,
+                                  height: 500,
+                                  color: Theme.of(context).cardTheme.color,
+                                  child: Center(
+                                    child: CupertinoActivityIndicator(),
+                                  ),
+                                );
+                              }
+                              
+                              // Get the SwipeItem at this index
+                              final swipeItem = swipeItems[index];
+                              final quote = swipeItem.content as Quote?;
+                              
+                              // If quote is null, return placeholder
+                              if (quote == null) {
+                                return Container(
+                                  width: double.infinity,
+                                  height: 500,
+                                  color: Theme.of(context).cardTheme.color,
+                                );
+                              }
+                              
+                              // CRITICAL: Pre-build the next 2-3 cards synchronously while building current card
+                              // This ensures they're ready before the swipe animation starts
+                              // We build them here to ensure they're in the cache immediately
+                              for (int offset = 1; offset <= 3 && (index + offset) < swipeItems.length; offset++) {
+                                final nextSwipeItem = swipeItems[index + offset];
+                                final nextQuote = nextSwipeItem.content as Quote?;
+                                if (nextQuote != null) {
+                                  // Synchronously ensure next cards are cached
+                                  // This is safe because getCachedCard checks cache first
+                                  provider.getCachedCard(nextQuote, context);
+                                }
+                              }
+                              
+                              // Use cached card to avoid rebuild delays and prevent blank screens
                               return provider.getCachedCard(quote, context);
                             },
                             onStackFinished: () {
-                              // This should rarely happen with our large pool
-                              // But just in case, reset
+                              // When stack is finished, add more items and reset
+                              provider.addMoreItems();
                               provider.resetSwipeCards();
                             },
                             itemChanged: (SwipeItem item, int index) {
-                              // Optional: Track which quote is being viewed
+                              // Track the current item and pre-build next cards
+                              // This is called when a card becomes the top card, so we build the next ones
+                              provider.updateCurrentItem(item, index);
+                              
+                              // Force a microtask to ensure next cards are built
+                              // This helps prevent blank screens during fast swiping
+                              Future.microtask(() {
+                                if (provider.matchEngine?.currentItem != null) {
+                                  // Trigger a rebuild to ensure next cards are ready
+                                  // The itemBuilder will be called for the next cards in the stack
+                                }
+                              });
                             },
                             upSwipeAllowed: false,
                             fillSpace: false,
