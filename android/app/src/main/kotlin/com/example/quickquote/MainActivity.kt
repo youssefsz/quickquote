@@ -1,4 +1,4 @@
-package com.quickquote.app
+package com.quickquotetn.app
 
 import io.flutter.embedding.android.FlutterActivity
 
