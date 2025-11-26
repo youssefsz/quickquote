@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <!-- Primary Meta Tags -->
+  <title>QuickQuote – Quick Daily Quotes | Quote Collection App</title>
+  <meta name="title" content="QuickQuote – Quick Daily Quotes | Quote Collection App">
+  <meta name="description" content="Discover, save, and share your favorite quotes with QuickQuote. Get daily inspiration with our beautifully designed quote collection app. Available on iOS and Android.">
+  <meta name="keywords" content="quotes, daily quotes, quote app, inspiration, motivation, QuickQuote, quote collection, save quotes, quote app iOS, quote app Android">
+  <meta name="author" content="Youssef dhibi">
+  <meta name="robots" content="index, follow">
+  <meta name="language" content="English">
+  <meta name="revisit-after" content="7 days">
+  
+  <!-- Favicons -->
+  <link rel="icon" type="image/x-icon" href="imgs/favicons/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="imgs/favicons/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="imgs/favicons/favicon-32x32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="imgs/favicons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="imgs/favicons/android-chrome-192x192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="imgs/favicons/android-chrome-512x512.png">
+  <link rel="manifest" href="imgs/favicons/site.webmanifest">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="QuickQuote – Quick Daily Quotes | Quote Collection App">
+  <meta property="og:description" content="Discover, save, and share your favorite quotes with QuickQuote. Get daily inspiration with our beautifully designed quote collection app.">
+  <meta property="og:image" content="splash.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:url" content="">
+  <meta property="og:site_name" content="QuickQuote">
+  <meta property="og:locale" content="en_US">
+  
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="QuickQuote – Quick Daily Quotes">
+  <meta name="twitter:description" content="Discover, save, and share your favorite quotes with QuickQuote. Get daily inspiration with our beautifully designed quote collection app.">
+  <meta name="twitter:image" content="splash.png">
+  <meta name="twitter:creator" content="@quickquote">
+  
+  <!-- Theme Color -->
+  <meta name="theme-color" content="#007AFF">
+  <meta name="msapplication-TileColor" content="#007AFF">
+  
+  <!-- Canonical URL -->
+  <link rel="canonical" href="">
+
+  <!-- Bebas Neue + Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Prevent flickering by setting theme before body renders -->
+  <script>
+    (function() {
+      const theme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', theme);
+      document.documentElement.classList.add(theme);
+    })();
+  </script>
+
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+
+    :root {
+      --bg: #F5F5F7;
+      --surface: #FFFFFF;
+      --text-primary: #1D1D1F;
+      --text-secondary: #86868B;
+      --accent: #007AFF;
+      --white: #ffffff;
+      --border-color: rgba(29,29,31,0.1);
+    }
+
+    :root[data-theme="dark"] {
+      --bg: #000000;
+      --surface: #1C1C1E;
+      --text-primary: #F5F5F7;
+      --text-secondary: #86868B;
+      --accent: #0A84FF;
+      --white: #ffffff;
+      --border-color: rgba(245,245,247,0.1);
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text-primary);
+      overflow-x: hidden;
+      position: relative;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .container {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    .content-wrapper {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem;
+      max-width: 1200px;
+      width: 100%;
+      align-items: center;
+    }
+
+    .app-showcase {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      animation: fadeIn 0.8s ease-out 0.2s both;
+      height: 100%;
+    }
+
+    .app-showcase::before {
+      content: '';
+      position: absolute;
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(0,122,255,0.05) 0%, transparent 70%);
+      border-radius: 50%;
+      z-index: -1;
+    }
+
+    :root[data-theme="dark"] .app-showcase::before {
+      background: radial-gradient(circle, rgba(10,132,255,0.08) 0%, transparent 70%);
+    }
+
+    .phone-frame {
+      position: relative;
+      display: inline-block;
+      padding: 10px;
+      background: #1D1D1F;
+      border-radius: 48px;
+      box-shadow: 
+        0 20px 60px rgba(0,0,0,0.12),
+        inset 0 0 0 1px rgba(255,255,255,0.08);
+      animation: fadeIn 0.8s ease-out 0.4s both, float 6s ease-in-out infinite 1s;
+      transition: all 0.4s cubic-bezier(0.16,1,0.3,1);
+    }
+
+    :root[data-theme="dark"] .phone-frame {
+      background: #1C1C1E;
+      box-shadow: 
+        0 20px 60px rgba(0,0,0,0.5),
+        inset 0 0 0 1px rgba(255,255,255,0.1);
+    }
+
+    /* Volume buttons on left side */
+    .phone-frame::before {
+      content: '';
+      position: absolute;
+      left: -4px;
+      top: 25%;
+      width: 3px;
+      height: 32px;
+      background: #1D1D1F;
+      border-radius: 2px 0 0 2px;
+      box-shadow: inset 0 0 2px rgba(0,0,0,0.3);
+    }
+
+    :root[data-theme="dark"] .phone-frame::before {
+      background: #86868B;
+      box-shadow: inset 0 0 2px rgba(0,0,0,0.2);
+    }
+
+    /* Power button on right side */
+    .phone-frame::after {
+      content: '';
+      position: absolute;
+      right: -4px;
+      top: 20%;
+      width: 3px;
+      height: 40px;
+      background: #1D1D1F;
+      border-radius: 0 2px 2px 0;
+      box-shadow: inset 0 0 2px rgba(0,0,0,0.3);
+    }
+
+    :root[data-theme="dark"] .phone-frame::after {
+      background: #86868B;
+      box-shadow: inset 0 0 2px rgba(0,0,0,0.2);
+    }
+
+    .phone-frame:hover {
+      transform: translateY(-5px) scale(1.02);
+      box-shadow: 
+        0 30px 80px rgba(0,122,255,0.15),
+        inset 0 0 0 1px rgba(255,255,255,0.1);
+    }
+
+    :root[data-theme="dark"] .phone-frame:hover {
+      box-shadow: 
+        0 30px 80px rgba(10,132,255,0.2),
+        inset 0 0 0 1px rgba(255,255,255,0.15);
+    }
+
+    .image-container {
+      position: relative;
+      width: 100%;
+      max-width: 300px;
+      display: block;
+    }
+
+    .app-demo-img {
+      width: 100%;
+      max-width: 300px;
+      height: auto;
+      object-fit: contain;
+      border-radius: 38px;
+      display: block;
+      filter: drop-shadow(0 25px 50px rgba(0,0,0,0.08));
+      transition: filter 0.4s cubic-bezier(0.16,1,0.3,1), opacity 1s ease-in-out;
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .app-demo-img.active {
+      opacity: 1;
+      position: relative;
+      pointer-events: auto;
+    }
+
+    :root[data-theme="dark"] .app-demo-img {
+      filter: drop-shadow(0 25px 50px rgba(0,0,0,0.3));
+    }
+
+    .phone-frame:hover .app-demo-img {
+      filter: drop-shadow(0 30px 60px rgba(0,0,0,0.12));
+    }
+
+    :root[data-theme="dark"] .phone-frame:hover .app-demo-img {
+      filter: drop-shadow(0 30px 60px rgba(0,0,0,0.4));
+    }
+
+    .content { animation: fadeIn 0.8s ease-out; }
+
+    .logo {
+      width: 56px; height: 56px;
+      margin-bottom: 3rem;
+      opacity: 0;
+      animation: fadeInUp 0.6s cubic-bezier(0.16,1,0.3,1) 0.3s forwards;
+      border-radius: 22%;
+      overflow: hidden;
+      background: var(--surface);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    :root[data-theme="dark"] .logo {
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+
+    .logo img { 
+      width: 100%; 
+      height: 100%; 
+      object-fit: cover;
+      transition: transform 0.3s ease; 
+      display: block;
+    }
+    .logo:hover img { transform: scale(1.1); }
+
+    .theme-toggle {
+      position: fixed;
+      top: 2rem;
+      right: 2rem;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--surface);
+      color: var(--text-primary);
+      border: 1px solid var(--border-color);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s cubic-bezier(0.16,1,0.3,1);
+      z-index: 1000;
+      opacity: 0;
+      animation: fadeIn 0.6s ease-out 0.9s forwards;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    :root[data-theme="dark"] .theme-toggle {
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+
+    .theme-toggle:hover {
+      transform: scale(1.05);
+      background: var(--accent);
+      color: var(--white);
+      box-shadow: 0 4px 12px rgba(0,122,255,0.3);
+    }
+
+    :root[data-theme="dark"] .theme-toggle:hover {
+      box-shadow: 0 4px 12px rgba(10,132,255,0.4);
+    }
+
+    .theme-toggle svg {
+      width: 24px;
+      height: 24px;
+      transition: transform 0.3s ease;
+    }
+
+    @keyframes fadeIn { from {opacity:0} to {opacity:1} }
+    @keyframes fadeInUp {
+      from { opacity:0; transform:translateY(30px) }
+      to   { opacity:1; transform:translateY(0)   }
+    }
+    @keyframes float {
+      0%,100% { transform: translateY(0) }
+      50%     { transform: translateY(-10px) }
+    }
+
+    h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3.5rem, 6vw, 5rem);
+      letter-spacing: 0.05em;
+      line-height: 1;
+      margin-bottom: 1rem;
+      opacity: 0;
+      animation: fadeInUp 0.6s cubic-bezier(0.16,1,0.3,1) 0.4s forwards;
+    }
+
+    .subtitle {
+      font-size: clamp(1.125rem, 2vw, 1.5rem);
+      letter-spacing: 0.02em;
+      color: var(--text-secondary);
+      margin-bottom: 3rem;
+      opacity: 0;
+      animation: fadeInUp 0.6s cubic-bezier(0.16,1,0.3,1) 0.6s forwards;
+    }
+
+    .download-buttons {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 4rem;
+      opacity: 0;
+      animation: fadeInUp 0.6s cubic-bezier(0.16,1,0.3,1) 0.7s forwards;
+    }
+
+    .download-btn {
+      display: inline-block;
+      text-decoration: none;
+      transition: all 0.3s cubic-bezier(0.16,1,0.3,1);
+      line-height: 0;
+    }
+
+    .download-btn img {
+      height: 60px;
+      width: auto;
+      display: block;
+      transition: transform 0.3s cubic-bezier(0.16,1,0.3,1);
+    }
+
+    .download-btn:hover {
+      transform: translateY(-3px);
+    }
+
+    .download-btn:hover img {
+      transform: scale(1.05);
+      filter: brightness(1.1);
+    }
+
+    :root[data-theme="dark"] .download-btn:hover img {
+      filter: brightness(1.15);
+    }
+
+    .download-btn.disabled {
+      pointer-events: none;
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .download-btn.disabled:hover {
+      transform: none;
+    }
+
+    .download-btn.disabled:hover img {
+      transform: none;
+      filter: none;
+    }
+
+    .coming-soon {
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      margin-top: 0.5rem;
+      font-weight: 500;
+    }
+
+    .download-btn-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .footer-note {
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+      opacity: 0;
+      animation: fadeInUp 0.6s cubic-bezier(0.16,1,0.3,1) 0.8s forwards;
+    }
+
+    .footer-note a {
+      color: var(--accent);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      transition: all 0.3s cubic-bezier(0.16,1,0.3,1);
+      font-weight: 500;
+    }
+
+    .footer-note a:hover {
+      color: var(--accent);
+      opacity: 0.8;
+    }
+
+    .footer-note a:active {
+      opacity: 0.6;
+    }
+
+    @media (max-width: 768px) {
+      .content-wrapper {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        text-align: center;
+      }
+      .app-showcase { order: 1 }
+      .content      { order: 2 }
+      .logo { margin: 0 auto 2rem }
+      .download-buttons { 
+        flex-direction: column; 
+        align-items: center;
+        gap: 0.75rem;
+      }
+      .download-btn-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .download-btn img {
+        height: 50px;
+      }
+      .image-container {
+        max-width: 240px;
+      }
+      .app-demo-img {
+        max-width: 240px;
+      }
+      .phone-frame {
+        padding: 8px;
+      }
+      .theme-toggle {
+        top: 1rem;
+        right: 1rem;
+        width: 40px;
+        height: 40px;
+      }
+      .theme-toggle svg {
+        width: 20px;
+        height: 20px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .container { padding: 1.5rem }
+      h1 { font-size: 3rem; margin-bottom: 0.75rem }
+      .subtitle { font-size: 1.25rem; margin-bottom: 1rem }
+      .image-container {
+        max-width: 200px;
+      }
+      .app-demo-img { max-width: 200px }
+      .phone-frame {
+        padding: 8px;
+        border-radius: 36px;
+      }
+      .app-demo-img {
+        border-radius: 28px;
+      }
+      .logo { width: 48px; height: 48px }
+      .download-btn img {
+        height: 45px;
+      }
+    }
+  </style>
+
+  <!-- Structured Data (JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "QuickQuote",
+    "applicationCategory": "LifestyleApplication",
+    "operatingSystem": "iOS, Android",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.5",
+      "ratingCount": "100"
+    },
+    "description": "Discover, save, and share your favorite quotes with QuickQuote. Get daily inspiration with our beautifully designed quote collection app.",
+    "screenshot": [
+      "imgs/screenshots/light/home.jpeg",
+      "imgs/screenshots/light/saved.jpeg",
+      "imgs/screenshots/light/settigns.jpeg"
+    ],
+    "author": {
+      "@type": "Person",
+      "name": "Youssef dhibi"
+    },
+    "downloadUrl": "https://apps.apple.com/app/ritualz/id6443862619",
+    "softwareVersion": "1.0.0"
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "QuickQuote",
+    "description": "Quick Daily Quotes - Discover, save, and share your favorite quotes",
+    "url": "",
+    "author": {
+      "@type": "Person",
+      "name": "Youssef dhibi"
+    },
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "",
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
+</head>
+<body>
+  <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+    <svg id="themeIcon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 18C15.3137 18 18 15.3137 18 12C18 8.68629 15.3137 6 12 6C8.68629 6 6 8.68629 6 12C6 15.3137 8.68629 18 12 18Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M12 2V4M12 20V22M4.93 4.93L6.34 6.34M17.66 17.66L19.07 19.07M2 12H4M20 12H22M6.34 17.66L4.93 19.07M19.07 4.93L17.66 6.34" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
+
+  <div class="container">
+    <div class="content-wrapper">
+      <div class="app-showcase">
+        <div class="phone-frame">
+          <div class="image-container">
+            <img id="homeImg"
+                 src="imgs/screenshots/light/home.jpeg"
+                 alt="QuickQuote app interface showing quote collection"
+                 class="app-demo-img active">
+            <img id="savedImg"
+                 src="imgs/screenshots/light/saved.jpeg"
+                 alt="QuickQuote app interface showing saved quotes"
+                 class="app-demo-img">
+            <img id="settingsImg"
+                 src="imgs/screenshots/light/settigns.jpeg"
+                 alt="QuickQuote app interface showing settings"
+                 class="app-demo-img">
+          </div>
+        </div>
+      </div>
+      <div class="content">
+        <div class="logo">
+          <img src="imgs/logo/logo.png" alt="QuickQuote logo" />
+        </div>
+
+        <h1>QuickQuote</h1>
+        <p class="subtitle">Quick Daily Quotes</p>
+
+        <div class="download-buttons">
+          <a href="https://apps.apple.com/us/app/6755724502"
+             class="download-btn app-store" aria-label="Download on App Store">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Download_on_the_App_Store_Badge.svg/1280px-Download_on_the_App_Store_Badge.svg.png" alt="Download on the App Store" />
+          </a>
+          <div class="download-btn-wrapper">
+            <a href="#" class="download-btn play-store disabled" aria-label="Get it on Google Play" onclick="return false;">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Google_Play_Store_badge_EN.svg/1024px-Google_Play_Store_badge_EN.svg.png" alt="Get it on Google Play" />
+            </a>
+            <span class="coming-soon">Coming Soon</span>
+          </div>
+        </div>
+
+        <p class="footer-note">Created with ❤️ by <a href="https://youssef.tn" target="_blank" rel="noopener noreferrer">Youssef dhibi</a></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      const themeToggle = document.getElementById('themeToggle');
+      const themeIcon = document.getElementById('themeIcon');
+      const homeImg = document.getElementById('homeImg');
+      const savedImg = document.getElementById('savedImg');
+      const settingsImg = document.getElementById('settingsImg');
+      const html = document.documentElement;
+      const images = [homeImg, savedImg, settingsImg];
+      const imageNames = ['home', 'saved', 'settigns'];
+      let currentImageIndex = 0;
+      let imageInterval = null;
+
+      function getTheme() {
+        return localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      }
+
+      function setTheme(theme) {
+        html.setAttribute('data-theme', theme);
+        html.classList.remove('light', 'dark');
+        html.classList.add(theme);
+        localStorage.setItem('theme', theme);
+        updateImages(theme);
+        updateIcon(theme);
+      }
+
+      function updateImages(theme) {
+        const mode = theme === 'dark' ? 'dark' : 'light';
+        // Note: light folder has 'settigns' typo, dark folder has 'settings'
+        const settingsName = mode === 'dark' ? 'settings' : 'settigns';
+        homeImg.src = `imgs/screenshots/${mode}/home.jpeg`;
+        savedImg.src = `imgs/screenshots/${mode}/saved.jpeg`;
+        settingsImg.src = `imgs/screenshots/${mode}/${settingsName}.jpeg`;
+      }
+
+      function updateIcon(theme) {
+        if (theme === 'dark') {
+          themeIcon.innerHTML = `
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="currentColor"/>
+          `;
+        } else {
+          themeIcon.innerHTML = `
+            <path d="M12 18C15.3137 18 18 15.3137 18 12C18 8.68629 15.3137 6 12 6C8.68629 6 6 8.68629 6 12C6 15.3137 8.68629 18 12 18Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M12 2V4M12 20V22M4.93 4.93L6.34 6.34M17.66 17.66L19.07 19.07M2 12H4M20 12H22M6.34 17.66L4.93 19.07M19.07 4.93L17.66 6.34" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          `;
+        }
+      }
+
+      function showNextImage() {
+        // Remove active class from current image
+        images[currentImageIndex].classList.remove('active');
+        
+        // Move to next image
+        currentImageIndex = (currentImageIndex + 1) % images.length;
+        
+        // Add active class to new image
+        images[currentImageIndex].classList.add('active');
+      }
+
+      function startImageCycle() {
+        // Clear existing interval if any
+        if (imageInterval) {
+          clearInterval(imageInterval);
+        }
+        
+        // Cycle through images every 3 seconds
+        imageInterval = setInterval(showNextImage, 3000);
+      }
+
+      // Initialize theme on load
+      const currentTheme = getTheme();
+      setTheme(currentTheme);
+      
+      // Start image cycling
+      startImageCycle();
+
+      // Toggle theme on button click
+      themeToggle.addEventListener('click', () => {
+        const newTheme = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        setTheme(newTheme);
+      });
+
+      // Listen for system theme changes
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+        if (!localStorage.getItem('theme')) {
+          setTheme(e.matches ? 'dark' : 'light');
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
