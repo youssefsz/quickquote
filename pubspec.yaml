@@ -34,6 +34,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/quotes/
+    - assets/logo/
 flutter_icons:
   android: true
   ios: true

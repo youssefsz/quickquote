@@ -322,10 +322,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
               Center(
                 child: Column(
                   children: [
-                    Icon(
-                      CupertinoIcons.quote_bubble,
-                      size: 48,
-                      color: theme.iconTheme.color?.withValues(alpha: 0.3),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(12.0),
+                      child: Image.asset(
+                        'assets/logo/logo.png',
+                        width: 48,
+                        height: 48,
+                        fit: BoxFit.cover,
+                      ),
                     ),
                     const SizedBox(height: 12),
                     Text(
