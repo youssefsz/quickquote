@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="landing-page/imgs/logo/logo.png" alt="QuickQuote Logo" width="120">
+  <img src="landing-page/imgs/logo/logo.png" alt="QuickQuote Logo" width="120" style="border-radius: 20px;">
   
   # QuickQuote
   
