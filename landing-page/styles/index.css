@@ -495,17 +495,17 @@
         }
 
         .download-btn img {
-            height: 50px;
+            height: 56px;
         }
 
         .github-source-btn {
-            padding: 0.625rem 1.25rem;
-            font-size: 0.8125rem;
+            padding: 0.875rem 1.75rem;
+            font-size: 0.9375rem;
         }
 
         .github-source-btn svg {
-            width: 16px;
-            height: 16px;
+            width: 20px;
+            height: 20px;
         }
 
         .image-container {
@@ -571,7 +571,17 @@
         }
 
         .download-btn img {
-            height: 45px;
+            height: 52px;
+        }
+
+        .github-source-btn {
+            padding: 0.8125rem 1.5rem;
+            font-size: 0.875rem;
+        }
+
+        .github-source-btn svg {
+            width: 18px;
+            height: 18px;
         }
     }
 
