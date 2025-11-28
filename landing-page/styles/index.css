@@ -314,10 +314,16 @@
 
     .download-buttons {
         display: flex;
-        gap: 1rem;
+        flex-direction: column;
+        gap: 1.5rem;
         margin-bottom: 4rem;
         opacity: 0;
         animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.7s forwards;
+    }
+
+    .download-buttons-row {
+        display: flex;
+        gap: 1rem;
     }
 
     .download-btn {
@@ -370,6 +376,50 @@
         font-weight: 500;
     }
 
+    .github-source-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.5rem;
+        background: var(--surface);
+        color: var(--text-primary);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        text-decoration: none;
+        font-size: 0.875rem;
+        font-weight: 500;
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        width: fit-content;
+    }
+
+    :root[data-theme="dark"] .github-source-btn {
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .github-source-btn svg {
+        width: 18px;
+        height: 18px;
+        transition: transform 0.3s ease;
+    }
+
+    .github-source-btn:hover {
+        transform: translateY(-2px);
+        background: var(--accent);
+        color: var(--white);
+        border-color: var(--accent);
+        box-shadow: 0 4px 12px rgba(0, 122, 255, 0.25);
+    }
+
+    :root[data-theme="dark"] .github-source-btn:hover {
+        box-shadow: 0 4px 12px rgba(10, 132, 255, 0.35);
+    }
+
+    .github-source-btn:hover svg {
+        transform: scale(1.1);
+    }
+
     .download-btn-wrapper {
         display: flex;
         flex-direction: column;
@@ -420,19 +470,42 @@
         }
 
         .download-buttons {
-            flex-direction: column;
+            gap: 1rem;
             align-items: center;
+        }
+
+        .download-buttons-row {
+            flex-direction: column;
             gap: 0.75rem;
+            align-items: center;
+            width: 100%;
         }
 
         .download-btn-wrapper {
             display: flex;
             flex-direction: column;
             align-items: center;
+            width: 100%;
+        }
+
+        .download-btn {
+            width: 100%;
+            display: flex;
+            justify-content: center;
         }
 
         .download-btn img {
             height: 50px;
+        }
+
+        .github-source-btn {
+            padding: 0.625rem 1.25rem;
+            font-size: 0.8125rem;
+        }
+
+        .github-source-btn svg {
+            width: 16px;
+            height: 16px;
         }
 
         .image-container {
