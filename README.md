@@ -1,6 +1,29 @@
-# quickquote
+# QuickQuote
 
-A new Flutter project.
+QuickQuote is an open-source Flutter application designed to provide quick daily quotes and allow users to collect their favorites. It features a beautiful, modern design with smooth animations and support for both Light and Dark modes.
+
+## Features
+
+- **Daily Inspiration**: Swipe through a curated collection of quotes.
+- **Save Favorites**: Keep a personal collection of quotes that resonate with you.
+- **Beautiful UI**: Clean, Apple-style aesthetics with fluid animations.
+- **Dark Mode**: Fully supported dark theme for comfortable reading at night.
+
+## Download
+
+Get QuickQuote on the App Store:
+
+<a href="https://apps.apple.com/us/app/quikquotetn/id6755724502">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Download_on_the_App_Store_Badge.svg/1280px-Download_on_the_App_Store_Badge.svg.png" alt="Download on the App Store" height="60">
+</a>
+
+*Coming soon to Google Play!*
+
+## Screenshots
+
+| Home | Saved | Settings |
+|:---:|:---:|:---:|
+| <img src="landing-page/imgs/screenshots/light/home.jpeg" width="250"> | <img src="landing-page/imgs/screenshots/light/saved.jpeg" width="250"> | <img src="landing-page/imgs/screenshots/light/settigns.jpeg" width="250"> |
 
 ## Getting Started
 
