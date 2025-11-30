@@ -18,6 +18,12 @@ class QuoteProvider with ChangeNotifier {
   List<Quote> get quotes => _quotes;
   CardSwiperController get controller => _controller;
   bool get isLoading => _isLoading;
+  
+  /// Get the currently visible quote
+  Quote? get currentQuote {
+    if (_quotes.isEmpty) return null;
+    return _quotes[_currentIndex % _quotes.length];
+  }
 
   QuoteProvider() {
     _loadQuotes();
@@ -88,6 +94,7 @@ class QuoteProvider with ChangeNotifier {
   void _onSwipe(int previousIndex, int currentIndex, CardSwiperDirection direction) {
     _currentIndex = currentIndex;
     _saveCurrentPosition();
+    notifyListeners(); // Notify listeners so UI can update with new current quote
   }
 
   void _saveCurrentPosition() {

@@ -7,6 +7,7 @@ import '../providers/quote_provider.dart';
 import '../providers/saved_quotes_provider.dart';
 import '../theme/app_theme.dart';
 import '../widgets/add_quote_modal.dart';
+import '../widgets/share_quote_button.dart';
 import 'package:light_dark_theme_toggle/light_dark_theme_toggle.dart';
 import 'package:onboarding_overlay/onboarding_overlay.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -204,6 +205,20 @@ class _HomeScreenState extends State<HomeScreen> {
                               },
                               themeIconType: ThemeIconType.classic,
                               size: 28,
+                            );
+                          },
+                        ),
+                        // Share button - only show if there's a current quote
+                        Consumer<QuoteProvider>(
+                          builder: (context, quoteProvider, child) {
+                            final currentQuote = quoteProvider.currentQuote;
+                            if (currentQuote == null) {
+                              return const SizedBox.shrink();
+                            }
+                            return ShareQuoteButton(
+                              quote: currentQuote,
+                              size: 26,
+                              padding: const EdgeInsets.all(8),
                             );
                           },
                         ),
