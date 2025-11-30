@@ -211,36 +211,6 @@ class _SavedScreenState extends State<SavedScreen> {
         ),
         Row(
           children: [
-            // Search button
-            CupertinoButton(
-              padding: EdgeInsets.zero,
-              minSize: 0,
-              onPressed: _toggleSearch,
-              child: Container(
-                padding: const EdgeInsets.all(8),
-                child: Icon(
-                  CupertinoIcons.search,
-                  size: 24,
-                  color: theme.iconTheme.color,
-                ),
-              ),
-            ),
-            const SizedBox(width: 8),
-            // Filter button
-            CupertinoButton(
-              padding: EdgeInsets.zero,
-              minSize: 0,
-              onPressed: () => _showFilterOptions(context),
-              child: Container(
-                padding: const EdgeInsets.all(8),
-                child: Icon(
-                  CupertinoIcons.sort_down,
-                  size: 24,
-                  color: theme.iconTheme.color,
-                ),
-              ),
-            ),
-            const SizedBox(width: 8),
             // Theme toggle
             Builder(
               builder: (context) {
@@ -269,6 +239,36 @@ class _SavedScreenState extends State<SavedScreen> {
                   size: 28,
                 );
               },
+            ),
+            const SizedBox(width: 16),
+            // Search button
+            CupertinoButton(
+              padding: EdgeInsets.zero,
+              minSize: 0,
+              onPressed: _toggleSearch,
+              child: Container(
+                padding: const EdgeInsets.all(8),
+                child: Icon(
+                  CupertinoIcons.search,
+                  size: 24,
+                  color: theme.iconTheme.color,
+                ),
+              ),
+            ),
+            const SizedBox(width: 16),
+            // Filter button
+            CupertinoButton(
+              padding: EdgeInsets.zero,
+              minSize: 0,
+              onPressed: () => _showFilterOptions(context),
+              child: Container(
+                padding: const EdgeInsets.all(8),
+                child: Icon(
+                  CupertinoIcons.sort_down,
+                  size: 24,
+                  color: theme.iconTheme.color,
+                ),
+              ),
             ),
           ],
         ),
