@@ -178,7 +178,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         Builder(
                           builder: (context) {
                             return LightDarkThemeToggle(
-                              value: !context.watch<ThemeProvider>().isDarkMode,
+                              value: Theme.of(context).brightness != Brightness.dark,
                               onChanged: (_) async {
                                 final overlay = CircularThemeRevealOverlay.of(
                                   context,

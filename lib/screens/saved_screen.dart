@@ -245,7 +245,7 @@ class _SavedScreenState extends State<SavedScreen> {
             Builder(
               builder: (context) {
                 return LightDarkThemeToggle(
-                  value: !isDarkMode,
+                  value: Theme.of(context).brightness != Brightness.dark,
                   onChanged: (_) async {
                     final overlay = CircularThemeRevealOverlay.of(context);
                     final center =

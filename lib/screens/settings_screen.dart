@@ -225,7 +225,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 child: Row(
                   children: [
                     Icon(
-                      isDarkMode
+                      Theme.of(context).brightness == Brightness.dark
                           ? CupertinoIcons.moon_fill
                           : CupertinoIcons.sun_max_fill,
                       size: 24,
@@ -243,9 +243,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         ),
                         const SizedBox(height: 2),
                         Text(
-                          isDarkMode ? 'Dark Mode' : 'Light Mode',
+                          Theme.of(context).brightness == Brightness.dark
+                              ? 'Dark Mode'
+                              : 'Light Mode',
                           style: theme.textTheme.bodySmall?.copyWith(
-                            color: isDarkMode
+                            color: Theme.of(context).brightness == Brightness.dark
                                 ? AppColors.darkTextSecondary
                                 : AppColors.lightTextSecondary,
                           ),
@@ -254,7 +256,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     ),
                     const Spacer(),
                     CupertinoSwitch(
-                      value: isDarkMode,
+                      value: Theme.of(context).brightness == Brightness.dark,
                       activeTrackColor: AppColors.darkAccent,
                       onChanged: (value) {
                         context.read<ThemeProvider>().toggleTheme();
