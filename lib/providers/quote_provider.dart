@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:swipe_cards/swipe_cards.dart';
+import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import '../models/quote.dart';
 import '../services/storage_service.dart';
 import '../widgets/quote_card.dart';
@@ -7,8 +7,7 @@ import '../widgets/quote_card.dart';
 class QuoteProvider with ChangeNotifier {
   final StorageService _storageService = StorageService();
   List<Quote> _quotes = [];
-  final List<SwipeItem> _swipeItems = [];
-  MatchEngine? _matchEngine;
+  final CardSwiperController _controller = CardSwiperController();
   bool _isLoading = true;
   int _currentIndex = 0;
   // Cache for pre-built card widgets to avoid rebuild delays
@@ -17,7 +16,7 @@ class QuoteProvider with ChangeNotifier {
   Brightness? _cachedThemeBrightness;
 
   List<Quote> get quotes => _quotes;
-  MatchEngine? get matchEngine => _matchEngine;
+  CardSwiperController get controller => _controller;
   bool get isLoading => _isLoading;
 
   QuoteProvider() {
@@ -40,41 +39,8 @@ class QuoteProvider with ChangeNotifier {
       }
     }
 
-    _initializeSwipeItems();
-
     _isLoading = false;
     notifyListeners();
-  }
-
-  void _initializeSwipeItems() {
-    if (_quotes.isEmpty) return;
-
-    // Create a large pool of swipe items for infinite effect
-    // We'll create 3x the quotes to ensure smooth infinite scrolling
-    final multiplier = _quotes.length < 10 ? 50 : 20;
-    _swipeItems.clear();
-    _cardCache.clear(); // Clear cache when reinitializing
-
-    for (int i = 0; i < multiplier; i++) {
-      for (var quote in _quotes) {
-        _swipeItems.add(
-          SwipeItem(
-            content: quote,
-            likeAction: () {
-              _onSwipeLike(quote);
-            },
-            nopeAction: () {
-              _onSwipe();
-            },
-            superlikeAction: () {
-              _onSwipeLike(quote);
-            },
-          ),
-        );
-      }
-    }
-
-    _matchEngine = MatchEngine(swipeItems: _swipeItems);
   }
 
   /// Pre-build and cache card widgets for a given context
@@ -119,14 +85,9 @@ class QuoteProvider with ChangeNotifier {
     );
   }
 
-  void _onSwipe() {
-    _currentIndex++;
+  void _onSwipe(int previousIndex, int currentIndex, CardSwiperDirection direction) {
+    _currentIndex = currentIndex;
     _saveCurrentPosition();
-
-    // When we're halfway through, seamlessly add more items
-    if (_currentIndex >= _swipeItems.length ~/ 2) {
-      _addMoreItems();
-    }
   }
 
   void _saveCurrentPosition() {
@@ -136,10 +97,20 @@ class QuoteProvider with ChangeNotifier {
     _storageService.saveLastViewedQuoteId(currentQuote.id);
   }
 
-  void _onSwipeLike(Quote quote) {
-    // Notify that a quote was liked (will be handled by SavedQuotesProvider)
-    _onLikeCallback?.call(quote);
-    _onSwipe();
+  bool onSwipe(int? previousIndex, int? currentIndex, CardSwiperDirection direction) {
+    if (_quotes.isEmpty || previousIndex == null || currentIndex == null) return false;
+    
+    // Get the quote that was swiped
+    final quoteIndex = previousIndex % _quotes.length;
+    final quote = _quotes[quoteIndex];
+    
+    // If swiped right (like), save the quote
+    if (direction == CardSwiperDirection.right) {
+      _onLikeCallback?.call(quote);
+    }
+    
+    _onSwipe(previousIndex, currentIndex, direction);
+    return true; // Allow the swipe
   }
 
   // Callback for when a quote is liked
@@ -149,44 +120,17 @@ class QuoteProvider with ChangeNotifier {
     _onLikeCallback = callback;
   }
 
-  void _addMoreItems() {
-    if (_quotes.isEmpty) return;
-
-    // Add another batch of quotes to the end
-    for (var quote in _quotes) {
-      _swipeItems.add(
-        SwipeItem(
-          content: quote,
-          likeAction: () {
-            _onSwipeLike(quote);
-          },
-          nopeAction: () {
-            _onSwipe();
-          },
-          superlikeAction: () {
-            _onSwipeLike(quote);
-          },
-        ),
-      );
-    }
+  void swipeToNext() {
+    _controller.swipe(CardSwiperDirection.right);
   }
 
-  void swipeToNext() {
-    if (_matchEngine?.currentItem != null) {
-      _matchEngine!.currentItem!.like();
-    }
+  void swipeToSkip() {
+    _controller.swipe(CardSwiperDirection.left);
   }
 
   void resetSwipeCards() {
     _currentIndex = 0;
-    // Note: We don't reset the rotation here, just the swipe engine
-    // If the user wants to "reset" completely, they might expect to go back to start
-    // But for now, "reset" usually means "reload" or "start over".
-    // If we want to start over from the VERY beginning (ignoring saved state),
-    // we would need to reload quotes without rotation.
-    // But typically resetSwipeCards is internal.
-    // Let's just re-init.
-    _initializeSwipeItems();
+    _controller.moveTo(0);
     notifyListeners();
   }
 
@@ -201,21 +145,6 @@ class QuoteProvider with ChangeNotifier {
         child: QuoteCard(quote: newQuote),
       );
     }
-
-    // Add to swipe items
-    final newSwipeItem = SwipeItem(
-      content: newQuote,
-      likeAction: () {
-        _onSwipeLike(newQuote);
-      },
-      nopeAction: () {
-        _onSwipe();
-      },
-      superlikeAction: () {
-        _onSwipeLike(newQuote);
-      },
-    );
-    _swipeItems.add(newSwipeItem);
 
     notifyListeners();
   }
