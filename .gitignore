@@ -44,9 +44,7 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
-# Landing page files (excluded from Git)
-landing-page/index.html
-landing-page/privacy-policy.html
+
 
 # Android build reports (excluded from Git)
 android/build/reports/problems/problems-report.html
