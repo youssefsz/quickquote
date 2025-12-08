@@ -55,18 +55,10 @@ class ShareableQuoteCard extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             // Quote icon at top
-            Container(
-              width: 56,
-              height: 56,
-              decoration: BoxDecoration(
-                color: accentColor.withValues(alpha: 0.15),
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Icon(
-                Icons.format_quote_rounded,
-                size: 32,
-                color: accentColor,
-              ),
+            Icon(
+              Icons.format_quote_rounded,
+              size: 48,
+              color: accentColor.withValues(alpha: 0.5),
             ),
             const SizedBox(height: 32),
 
@@ -113,26 +105,15 @@ class ShareableQuoteCard extends StatelessWidget {
             ),
             const SizedBox(height: 40),
 
-            // App branding
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.auto_awesome,
-                  size: 16,
-                  color: accentColor.withValues(alpha: 0.6),
-                ),
-                const SizedBox(width: 8),
-                Text(
-                  'QuickQuote',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: accentColor.withValues(alpha: 0.6),
-                    letterSpacing: 1,
-                  ),
-                ),
-              ],
+            // Minimal watermark
+            Text(
+              'Created by QuikQuoteTN',
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+                color: secondaryTextColor.withValues(alpha: 0.5),
+                letterSpacing: 0.5,
+              ),
             ),
           ],
         ),
