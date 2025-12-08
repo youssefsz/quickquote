@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/quote.dart';
+import '../services/review_service.dart';
 import '../services/storage_service.dart';
 
 enum SortOrder { newestFirst, oldestFirst }
@@ -61,7 +62,7 @@ class SavedQuotesProvider with ChangeNotifier {
     filtered.sort((a, b) {
       final dateA = a.savedDate ?? DateTime(1970);
       final dateB = b.savedDate ?? DateTime(1970);
-      
+
       if (_sortOrder == SortOrder.newestFirst) {
         return dateB.compareTo(dateA);
       } else {
@@ -97,7 +98,7 @@ class SavedQuotesProvider with ChangeNotifier {
     await Future.delayed(const Duration(milliseconds: 300));
 
     _currentDisplayCount += _itemsPerPage;
-    
+
     _isLoadingMore = false;
     notifyListeners();
   }
@@ -153,6 +154,10 @@ class SavedQuotesProvider with ChangeNotifier {
 
     await _storageService.saveQuoteToFavorites(quote);
 
+    // Track saved quote for review prompt trigger
+    // This will show the in-app review dialog after the 3rd saved quote
+    ReviewService().onQuoteSaved();
+
     // Reload to get the quote with timestamp
     await loadSavedQuotes();
   }
@@ -185,7 +190,7 @@ class SavedQuotesProvider with ChangeNotifier {
     final quotesToRemove = _savedQuotes
         .where((q) => _selectedQuoteIds.contains(q.id))
         .toList();
-    
+
     for (final quote in quotesToRemove) {
       await _storageService.removeQuoteFromFavorites(quote);
     }

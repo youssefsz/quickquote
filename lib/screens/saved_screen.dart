@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import '../models/quote.dart';
 import '../providers/saved_quotes_provider.dart';
 import '../theme/app_theme.dart';
+import '../widgets/share_quote_button.dart';
 import 'package:light_dark_theme_toggle/light_dark_theme_toggle.dart';
 
 class SavedScreen extends StatefulWidget {
@@ -211,41 +212,11 @@ class _SavedScreenState extends State<SavedScreen> {
         ),
         Row(
           children: [
-            // Search button
-            CupertinoButton(
-              padding: EdgeInsets.zero,
-              minSize: 0,
-              onPressed: _toggleSearch,
-              child: Container(
-                padding: const EdgeInsets.all(8),
-                child: Icon(
-                  CupertinoIcons.search,
-                  size: 24,
-                  color: theme.iconTheme.color,
-                ),
-              ),
-            ),
-            const SizedBox(width: 8),
-            // Filter button
-            CupertinoButton(
-              padding: EdgeInsets.zero,
-              minSize: 0,
-              onPressed: () => _showFilterOptions(context),
-              child: Container(
-                padding: const EdgeInsets.all(8),
-                child: Icon(
-                  CupertinoIcons.sort_down,
-                  size: 24,
-                  color: theme.iconTheme.color,
-                ),
-              ),
-            ),
-            const SizedBox(width: 8),
             // Theme toggle
             Builder(
               builder: (context) {
                 return LightDarkThemeToggle(
-                  value: !isDarkMode,
+                  value: Theme.of(context).brightness != Brightness.dark,
                   onChanged: (_) async {
                     final overlay = CircularThemeRevealOverlay.of(context);
                     final center =
@@ -269,6 +240,36 @@ class _SavedScreenState extends State<SavedScreen> {
                   size: 28,
                 );
               },
+            ),
+            const SizedBox(width: 16),
+            // Search button
+            CupertinoButton(
+              padding: EdgeInsets.zero,
+              minSize: 0,
+              onPressed: _toggleSearch,
+              child: Container(
+                padding: const EdgeInsets.all(8),
+                child: Icon(
+                  CupertinoIcons.search,
+                  size: 24,
+                  color: theme.iconTheme.color,
+                ),
+              ),
+            ),
+            const SizedBox(width: 16),
+            // Filter button
+            CupertinoButton(
+              padding: EdgeInsets.zero,
+              minSize: 0,
+              onPressed: () => _showFilterOptions(context),
+              child: Container(
+                padding: const EdgeInsets.all(8),
+                child: Icon(
+                  CupertinoIcons.sort_down,
+                  size: 24,
+                  color: theme.iconTheme.color,
+                ),
+              ),
             ),
           ],
         ),
@@ -762,27 +763,38 @@ class _SavedQuoteCard extends StatelessWidget {
                                           ),
                                     ),
                                   ),
-                                  // Delete button (only when not in selection mode)
+                                  // Share and Delete buttons (only when not in selection mode)
                                   if (!isSelectionMode)
-                                    GestureDetector(
-                                      onTap: () async {
-                                        final confirm =
-                                            await _showDeleteConfirmation(
-                                              context,
-                                            );
-                                        if (confirm == true) {
-                                          onDelete();
-                                        }
-                                      },
-                                      behavior: HitTestBehavior.opaque,
-                                      child: Container(
-                                        padding: const EdgeInsets.all(12),
-                                        child: Icon(
-                                          CupertinoIcons.heart_fill,
-                                          color: Colors.red.withValues(alpha: 0.8),
-                                          size: 22,
+                                    Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        CompactShareButton(
+                                          quote: quote,
+                                          iconColor: theme.textTheme.bodyMedium
+                                              ?.color
+                                              ?.withValues(alpha: 0.7),
                                         ),
-                                      ),
+                                        GestureDetector(
+                                          onTap: () async {
+                                            final confirm =
+                                                await _showDeleteConfirmation(
+                                                  context,
+                                                );
+                                            if (confirm == true) {
+                                              onDelete();
+                                            }
+                                          },
+                                          behavior: HitTestBehavior.opaque,
+                                          child: Container(
+                                            padding: const EdgeInsets.all(12),
+                                            child: Icon(
+                                              CupertinoIcons.heart_fill,
+                                              color: Colors.red.withValues(alpha: 0.8),
+                                              size: 22,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                 ],
                               ),
@@ -898,6 +910,9 @@ class _QuoteDetailModal extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 48),
+                  // Share button
+                  ProminentShareButton(quote: quote),
+                  const SizedBox(height: 32),
                 ],
               ),
             ),
