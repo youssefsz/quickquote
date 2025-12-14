@@ -66,7 +66,7 @@ Contributions are welcome! Feel free to open an issue or submit a pull request.
 
 ## Author
 
-Created with ❤️ by [Youssef dhibi](https://youssef.tn)
+Created with ❤️ by [Youssef Dhibi](https://youssef.tn)
 
 ---
 
