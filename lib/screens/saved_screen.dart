@@ -9,6 +9,7 @@ import '../providers/saved_quotes_provider.dart';
 import '../theme/app_theme.dart';
 import '../widgets/share_quote_button.dart';
 import 'package:light_dark_theme_toggle/light_dark_theme_toggle.dart';
+import 'quote_detail_screen.dart';
 
 class SavedScreen extends StatefulWidget {
   const SavedScreen({super.key});
@@ -549,11 +550,17 @@ class _SavedScreenState extends State<SavedScreen> {
   }
 
   void _showQuoteDetail(BuildContext context, Quote quote) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (context) => _QuoteDetailModal(quote: quote),
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) {
+          return FadeTransition(
+            opacity: animation,
+            child: QuoteDetailScreen(quote: quote),
+          );
+        },
+        transitionDuration: const Duration(milliseconds: 400),
+        reverseTransitionDuration: const Duration(milliseconds: 300),
+      ),
     );
   }
 }
@@ -647,167 +654,181 @@ class _SavedQuoteCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onLongPress: onLongPress,
-      child: Container(
-        margin: const EdgeInsets.only(bottom: 12),
-        decoration: BoxDecoration(
-          color: theme.cardTheme.color,
-          borderRadius: BorderRadius.circular(20),
-          boxShadow: theme.brightness == Brightness.light
-              ? [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.05),
-                    blurRadius: 10,
-                    offset: const Offset(0, 4),
-                  ),
-                ]
-              : null,
-          border: isSelected
-              ? Border.all(color: theme.colorScheme.primary, width: 2)
-              : null,
-        ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(20),
-          child: Stack(
-            children: [
-              // Main content
-              Dismissible(
-                key: Key(quote.id),
-                direction: isSelectionMode
-                    ? DismissDirection.none
-                    : DismissDirection.endToStart,
-                background: Container(
-                  alignment: Alignment.centerRight,
-                  padding: const EdgeInsets.only(right: 24),
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [Colors.red.withValues(alpha: 0.8), Colors.red],
+      child: Hero(
+        tag: 'quote_card_${quote.id}',
+        child: Material(
+          color: Colors.transparent,
+          child: Container(
+            margin: const EdgeInsets.only(bottom: 12),
+            decoration: BoxDecoration(
+              color: theme.cardTheme.color,
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: theme.brightness == Brightness.light
+                  ? [
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: 0.05),
+                        blurRadius: 10,
+                        offset: const Offset(0, 4),
+                      ),
+                    ]
+                  : null,
+              border: isSelected
+                  ? Border.all(color: theme.colorScheme.primary, width: 2)
+                  : null,
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: Stack(
+                children: [
+                  // Main content
+                  Dismissible(
+                    key: Key(quote.id),
+                    direction: isSelectionMode
+                        ? DismissDirection.none
+                        : DismissDirection.endToStart,
+                    background: Container(
+                      alignment: Alignment.centerRight,
+                      padding: const EdgeInsets.only(right: 24),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            Colors.red.withValues(alpha: 0.8),
+                            Colors.red,
+                          ],
+                        ),
+                      ),
+                      child: const Icon(
+                        CupertinoIcons.delete,
+                        color: Colors.white,
+                        size: 28,
+                      ),
                     ),
-                  ),
-                  child: const Icon(
-                    CupertinoIcons.delete,
-                    color: Colors.white,
-                    size: 28,
-                  ),
-                ),
-                confirmDismiss: (direction) async {
-                  return await _showDeleteConfirmation(context);
-                },
-                onDismissed: (direction) {
-                  onDelete();
-                },
-                child: CupertinoButton(
-                  padding: EdgeInsets.zero,
-                  onPressed: onTap,
-                  pressedOpacity: 0.6,
-                  child: Padding(
-                    padding: const EdgeInsets.all(20),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Checkbox in selection mode
-                        if (isSelectionMode) ...[
-                          Padding(
-                            padding: const EdgeInsets.only(right: 12, top: 2),
-                            child: Icon(
-                              isSelected
-                                  ? CupertinoIcons.check_mark_circled_solid
-                                  : CupertinoIcons.circle,
-                              color: isSelected
-                                  ? theme.colorScheme.primary
-                                  : theme.textTheme.bodyMedium?.color
-                                        ?.withValues(alpha: 0.3),
-                              size: 24,
-                            ),
-                          ),
-                        ],
-                        // Quote content
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              // Quote text
-                              Text(
-                                quote.text,
-                                style: GoogleFonts.dmSerifDisplay(
-                                  fontSize: 18,
-                                  height: 1.4,
-                                  color: theme.textTheme.bodyLarge?.color,
-                                  decoration: TextDecoration.none,
+                    confirmDismiss: (direction) async {
+                      return await _showDeleteConfirmation(context);
+                    },
+                    onDismissed: (direction) {
+                      onDelete();
+                    },
+                    child: CupertinoButton(
+                      padding: EdgeInsets.zero,
+                      onPressed: onTap,
+                      pressedOpacity: 0.6,
+                      child: Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // Checkbox in selection mode
+                            if (isSelectionMode) ...[
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                  right: 12,
+                                  top: 2,
                                 ),
-                                maxLines: 4,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              const SizedBox(height: 12),
-
-                              // Author and delete button row
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Expanded(
-                                    child: Text(
-                                      '— ${quote.author}',
-                                      style: theme.textTheme.bodyMedium
-                                          ?.copyWith(
-                                            color: theme
-                                                .textTheme
-                                                .bodyMedium
-                                                ?.color
-                                                ?.withValues(alpha: 0.6),
-                                            fontWeight: FontWeight.w500,
-                                            letterSpacing: 0.3,
-                                            decoration: TextDecoration.none,
-                                          ),
-                                    ),
-                                  ),
-                                  // Share and Delete buttons (only when not in selection mode)
-                                  if (!isSelectionMode)
-                                    Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        CompactShareButton(
-                                          quote: quote,
-                                          iconColor: theme
-                                              .textTheme
-                                              .bodyMedium
-                                              ?.color
-                                              ?.withValues(alpha: 0.7),
-                                        ),
-                                        GestureDetector(
-                                          onTap: () async {
-                                            final confirm =
-                                                await _showDeleteConfirmation(
-                                                  context,
-                                                );
-                                            if (confirm == true) {
-                                              onDelete();
-                                            }
-                                          },
-                                          behavior: HitTestBehavior.opaque,
-                                          child: Container(
-                                            padding: const EdgeInsets.all(12),
-                                            child: Icon(
-                                              CupertinoIcons.heart_fill,
-                                              color: Colors.red.withValues(
-                                                alpha: 0.8,
-                                              ),
-                                              size: 22,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                ],
+                                child: Icon(
+                                  isSelected
+                                      ? CupertinoIcons.check_mark_circled_solid
+                                      : CupertinoIcons.circle,
+                                  color: isSelected
+                                      ? theme.colorScheme.primary
+                                      : theme.textTheme.bodyMedium?.color
+                                            ?.withValues(alpha: 0.3),
+                                  size: 24,
+                                ),
                               ),
                             ],
-                          ),
+                            // Quote content
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  // Quote text
+                                  Text(
+                                    quote.text,
+                                    style: GoogleFonts.dmSerifDisplay(
+                                      fontSize: 18,
+                                      height: 1.4,
+                                      color: theme.textTheme.bodyLarge?.color,
+                                      decoration: TextDecoration.none,
+                                    ),
+                                    maxLines: 4,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  const SizedBox(height: 12),
+
+                                  // Author and delete button row
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          '— ${quote.author}',
+                                          style: theme.textTheme.bodyMedium
+                                              ?.copyWith(
+                                                color: theme
+                                                    .textTheme
+                                                    .bodyMedium
+                                                    ?.color
+                                                    ?.withValues(alpha: 0.6),
+                                                fontWeight: FontWeight.w500,
+                                                letterSpacing: 0.3,
+                                                decoration: TextDecoration.none,
+                                              ),
+                                        ),
+                                      ),
+                                      // Share and Delete buttons (only when not in selection mode)
+                                      if (!isSelectionMode)
+                                        Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            CompactShareButton(
+                                              quote: quote,
+                                              iconColor: theme
+                                                  .textTheme
+                                                  .bodyMedium
+                                                  ?.color
+                                                  ?.withValues(alpha: 0.7),
+                                            ),
+                                            GestureDetector(
+                                              onTap: () async {
+                                                final confirm =
+                                                    await _showDeleteConfirmation(
+                                                      context,
+                                                    );
+                                                if (confirm == true) {
+                                                  onDelete();
+                                                }
+                                              },
+                                              behavior: HitTestBehavior.opaque,
+                                              child: Container(
+                                                padding: const EdgeInsets.all(
+                                                  12,
+                                                ),
+                                                child: Icon(
+                                                  CupertinoIcons.heart_fill,
+                                                  color: Colors.red.withValues(
+                                                    alpha: 0.8,
+                                                  ),
+                                                  size: 22,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
                   ),
-                ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),
@@ -832,93 +853,6 @@ class _SavedQuoteCard extends StatelessWidget {
             onPressed: () => Navigator.of(context).pop(true),
             isDestructiveAction: true,
             child: const Text('Remove'),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _QuoteDetailModal extends StatelessWidget {
-  final Quote quote;
-
-  const _QuoteDetailModal({required this.quote});
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final isDarkMode = theme.brightness == Brightness.dark;
-
-    return Container(
-      height: MediaQuery.of(context).size.height * 0.7,
-      decoration: BoxDecoration(
-        // Use a slightly lighter dark color for the modal in dark mode
-        color: isDarkMode
-            ? const Color(0xFF1C1C1E)
-            : theme.scaffoldBackgroundColor,
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(30)),
-      ),
-      child: Column(
-        children: [
-          // Drag Handle
-          Center(
-            child: Container(
-              margin: const EdgeInsets.only(top: 12, bottom: 20),
-              width: 40,
-              height: 5,
-              decoration: BoxDecoration(
-                color: theme.textTheme.bodyMedium?.color?.withValues(
-                  alpha: 0.2,
-                ),
-                borderRadius: BorderRadius.circular(3),
-              ),
-            ),
-          ),
-
-          // Content
-          Expanded(
-            child: SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              padding: const EdgeInsets.symmetric(horizontal: 32),
-              child: Column(
-                children: [
-                  const SizedBox(height: 20),
-                  Icon(
-                    Icons.format_quote_rounded,
-                    size: 60,
-                    color: theme.colorScheme.primary.withValues(alpha: 0.5),
-                  ),
-                  const SizedBox(height: 32),
-                  Text(
-                    quote.text,
-                    textAlign: TextAlign.center,
-                    style: GoogleFonts.dmSerifDisplay(
-                      fontSize: 24,
-                      height: 1.5,
-                      color: theme.textTheme.bodyLarge?.color,
-                      decoration: TextDecoration.none,
-                    ),
-                  ),
-                  const SizedBox(height: 32),
-                  Text(
-                    '— ${quote.author}',
-                    textAlign: TextAlign.center,
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      color: theme.textTheme.bodyMedium?.color?.withValues(
-                        alpha: 0.6,
-                      ),
-                      fontWeight: FontWeight.w500,
-                      letterSpacing: 0.5,
-                      decoration: TextDecoration.none,
-                    ),
-                  ),
-                  const SizedBox(height: 48),
-                  // Share button
-                  ProminentShareButton(quote: quote),
-                  const SizedBox(height: 32),
-                ],
-              ),
-            ),
           ),
         ],
       ),
