@@ -3,7 +3,7 @@
 Script to resize all screenshots to 1242 × 2688px (iPhone 14 Pro Max resolution).
 Processes images in both dark and light theme folders.
 
-Note: The source files are PNG images with .jpeg extension.
+Note: The source files are PNG images.
 """
 
 from PIL import Image
@@ -29,20 +29,11 @@ def resize_image(image_path: str) -> None:
             # Resize to target dimensions using high-quality resampling
             resized_img = img.resize((TARGET_WIDTH, TARGET_HEIGHT), Image.Resampling.LANCZOS)
             
-            # Convert RGBA to RGB (JPEG doesn't support transparency)
-            if resized_img.mode == 'RGBA':
-                # Create a white background and paste the image
-                background = Image.new('RGB', resized_img.size, (255, 255, 255))
-                background.paste(resized_img, mask=resized_img.split()[3])  # Use alpha channel as mask
-                resized_img = background
-            elif resized_img.mode != 'RGB':
-                resized_img = resized_img.convert('RGB')
-            
-            # Save the resized image as proper JPEG (overwrite original)
-            resized_img.save(image_path, "JPEG", quality=95)
+            # Save the resized image as PNG
+            resized_img.save(image_path, "PNG")
             
             print(f"✓ Resized: {os.path.basename(image_path)}")
-            print(f"  {original_size[0]}x{original_size[1]} ({original_mode}) → {TARGET_WIDTH}x{TARGET_HEIGHT} (RGB/JPEG)")
+            print(f"  {original_size[0]}x{original_size[1]} ({original_mode}) → {TARGET_WIDTH}x{TARGET_HEIGHT} (PNG)")
             
     except Exception as e:
         print(f"✗ Error processing {image_path}: {e}")

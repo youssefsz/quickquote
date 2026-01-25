@@ -6,7 +6,7 @@
     const settingsImg = document.getElementById('settingsImg');
     const html = document.documentElement;
     const images = [homeImg, savedImg, settingsImg];
-    const imageNames = ['home', 'saved', 'settigns'];
+    const imageNames = ['home', 'saved', 'settings'];
     let currentImageIndex = 0;
     let imageInterval = null;
 
@@ -25,11 +25,9 @@
 
     function updateImages(theme) {
         const mode = theme === 'dark' ? 'dark' : 'light';
-        // Note: light folder has 'settigns' typo, dark folder has 'settings'
-        const settingsName = mode === 'dark' ? 'settings' : 'settigns';
-        homeImg.src = `imgs/screenshots/${mode}/home.jpeg`;
-        savedImg.src = `imgs/screenshots/${mode}/saved.jpeg`;
-        settingsImg.src = `imgs/screenshots/${mode}/${settingsName}.jpeg`;
+        homeImg.src = `imgs/screenshots/${mode}/home.png`;
+        savedImg.src = `imgs/screenshots/${mode}/saved.png`;
+        settingsImg.src = `imgs/screenshots/${mode}/settings.png`;
     }
 
     function updateIcon(theme) {
