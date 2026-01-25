@@ -20,9 +20,18 @@ class QuoteCard extends StatelessWidget {
         border: Border.all(
           color: Theme.of(context).brightness == Brightness.dark
               ? Colors.white.withValues(alpha: 0.1)
-              : Colors.black.withValues(alpha: 0.08),
+              : Colors.black.withValues(alpha: 0.1),
           width: 1,
         ),
+        boxShadow: [
+          if (Theme.of(context).brightness == Brightness.light)
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.08),
+              blurRadius: 24,
+              offset: const Offset(0, 8),
+              spreadRadius: 2,
+            ),
+        ],
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

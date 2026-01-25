@@ -1,4 +1,3 @@
-import 'package:circular_theme_reveal/circular_theme_reveal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -72,11 +71,9 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
           themeMode: themeProvider.themeMode,
-          themeAnimationDuration: Duration.zero,
+          themeAnimationDuration: const Duration(milliseconds: 300),
           builder: (context, child) {
-            return CircularThemeRevealOverlay(
-              child: child ?? const SizedBox.shrink(),
-            );
+            return child ?? const SizedBox.shrink();
           },
           home: const MainNavigation(),
         );

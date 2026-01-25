@@ -1,4 +1,5 @@
-import 'package:circular_theme_reveal/circular_theme_reveal.dart';
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -217,24 +218,8 @@ class _SavedScreenState extends State<SavedScreen> {
               builder: (context) {
                 return LightDarkThemeToggle(
                   value: Theme.of(context).brightness != Brightness.dark,
-                  onChanged: (_) async {
-                    final overlay = CircularThemeRevealOverlay.of(context);
-                    final center =
-                        CircularThemeRevealOverlay.getCenterFromContext(
-                          context,
-                        );
-
-                    if (overlay != null) {
-                      await overlay.startTransition(
-                        center: center,
-                        reverse: false,
-                        onThemeChange: () {
-                          context.read<ThemeProvider>().toggleTheme();
-                        },
-                      );
-                    } else {
-                      context.read<ThemeProvider>().toggleTheme();
-                    }
+                  onChanged: (_) {
+                    context.read<ThemeProvider>().toggleTheme();
                   },
                   themeIconType: ThemeIconType.classic,
                   size: 28,
@@ -305,7 +290,9 @@ class _SavedScreenState extends State<SavedScreen> {
               focusNode: _searchFocusNode,
               placeholder: 'Search quotes or authors...',
               placeholderStyle: theme.textTheme.bodyMedium?.copyWith(
-                color: theme.textTheme.bodyMedium?.color?.withValues(alpha: 0.4),
+                color: theme.textTheme.bodyMedium?.color?.withValues(
+                  alpha: 0.4,
+                ),
               ),
               style: theme.textTheme.bodyMedium,
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
@@ -326,7 +313,9 @@ class _SavedScreenState extends State<SavedScreen> {
                 child: Icon(
                   CupertinoIcons.search,
                   size: 20,
-                  color: theme.textTheme.bodyMedium?.color?.withValues(alpha: 0.5),
+                  color: theme.textTheme.bodyMedium?.color?.withValues(
+                    alpha: 0.5,
+                  ),
                 ),
               ),
             ),
@@ -513,7 +502,13 @@ class _SavedScreenState extends State<SavedScreen> {
   ) {
     return ListView.builder(
       controller: _scrollController,
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      // Extra bottom padding for Liquid Glass tab bar on Apple platforms
+      padding: EdgeInsets.only(
+        left: 16,
+        right: 16,
+        top: 8,
+        bottom: (Platform.isIOS || Platform.isMacOS) ? 80 : 8,
+      ),
       itemCount: quotes.length + (provider.hasMoreQuotes ? 1 : 0),
       itemBuilder: (context, index) {
         // Show loading indicator at the bottom
@@ -650,8 +645,6 @@ class _SavedQuoteCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDarkMode = theme.brightness == Brightness.dark;
-
     return GestureDetector(
       onLongPress: onLongPress,
       child: Container(
@@ -659,14 +652,18 @@ class _SavedQuoteCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: theme.cardTheme.color,
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(
-            color: isSelected
-                ? theme.colorScheme.primary
-                : (isDarkMode
-                      ? Colors.white.withValues(alpha: 0.08)
-                      : Colors.black.withValues(alpha: 0.06)),
-            width: isSelected ? 2 : 1,
-          ),
+          boxShadow: theme.brightness == Brightness.light
+              ? [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.05),
+                    blurRadius: 10,
+                    offset: const Offset(0, 4),
+                  ),
+                ]
+              : null,
+          border: isSelected
+              ? Border.all(color: theme.colorScheme.primary, width: 2)
+              : null,
         ),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(20),
@@ -770,7 +767,9 @@ class _SavedQuoteCard extends StatelessWidget {
                                       children: [
                                         CompactShareButton(
                                           quote: quote,
-                                          iconColor: theme.textTheme.bodyMedium
+                                          iconColor: theme
+                                              .textTheme
+                                              .bodyMedium
                                               ?.color
                                               ?.withValues(alpha: 0.7),
                                         ),
@@ -789,7 +788,9 @@ class _SavedQuoteCard extends StatelessWidget {
                                             padding: const EdgeInsets.all(12),
                                             child: Icon(
                                               CupertinoIcons.heart_fill,
-                                              color: Colors.red.withValues(alpha: 0.8),
+                                              color: Colors.red.withValues(
+                                                alpha: 0.8,
+                                              ),
                                               size: 22,
                                             ),
                                           ),
@@ -866,7 +867,9 @@ class _QuoteDetailModal extends StatelessWidget {
               width: 40,
               height: 5,
               decoration: BoxDecoration(
-                color: theme.textTheme.bodyMedium?.color?.withValues(alpha: 0.2),
+                color: theme.textTheme.bodyMedium?.color?.withValues(
+                  alpha: 0.2,
+                ),
                 borderRadius: BorderRadius.circular(3),
               ),
             ),
@@ -901,8 +904,8 @@ class _QuoteDetailModal extends StatelessWidget {
                     '— ${quote.author}',
                     textAlign: TextAlign.center,
                     style: theme.textTheme.titleMedium?.copyWith(
-                      color: theme.textTheme.bodyMedium?.color?.withValues(alpha: 
-                        0.6,
+                      color: theme.textTheme.bodyMedium?.color?.withValues(
+                        alpha: 0.6,
                       ),
                       fontWeight: FontWeight.w500,
                       letterSpacing: 0.5,

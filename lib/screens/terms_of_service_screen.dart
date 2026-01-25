@@ -17,7 +17,10 @@ class TermsOfServiceScreen extends StatelessWidget {
           children: [
             // Header
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 24.0,
+                vertical: 16.0,
+              ),
               child: Row(
                 children: [
                   CupertinoButton(
@@ -44,7 +47,10 @@ class TermsOfServiceScreen extends StatelessWidget {
             // Content
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 24.0,
+                  vertical: 16.0,
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -69,11 +75,11 @@ class TermsOfServiceScreen extends StatelessWidget {
                       context,
                       '2. Description of Service',
                       'QuickQuote is a mobile application that allows users to:\n\n'
-                      '• Browse and view inspirational quotes\n\n'
-                      '• Save favorite quotes to a personal collection\n\n'
-                      '• Add custom quotes\n\n'
-                      '• Switch between light and dark themes\n\n'
-                      'All functionality operates entirely on your device without requiring an internet connection.',
+                          '• Browse and view inspirational quotes\n\n'
+                          '• Save favorite quotes to a personal collection\n\n'
+                          '• Add custom quotes\n\n'
+                          '• Switch between light and dark themes\n\n'
+                          'All functionality operates entirely on your device without requiring an internet connection.',
                     ),
                     const SizedBox(height: 24),
 
@@ -81,10 +87,10 @@ class TermsOfServiceScreen extends StatelessWidget {
                       context,
                       '3. User Content',
                       'You may add custom quotes to the App:\n\n'
-                      '• You retain ownership of any quotes you create\n\n'
-                      '• You are responsible for ensuring your content does not violate any laws or infringe on others\' rights\n\n'
-                      '• You agree not to post offensive, harmful, or inappropriate content\n\n'
-                      '• All content is stored locally on your device and is not shared or distributed by us',
+                          '• You retain ownership of any quotes you create\n\n'
+                          '• You are responsible for ensuring your content does not violate any laws or infringe on others\' rights\n\n'
+                          '• You agree not to post offensive, harmful, or inappropriate content\n\n'
+                          '• All content is stored locally on your device and is not shared or distributed by us',
                     ),
                     const SizedBox(height: 24),
 
@@ -92,10 +98,10 @@ class TermsOfServiceScreen extends StatelessWidget {
                       context,
                       '4. Acceptable Use',
                       'You agree to use QuickQuote only for lawful purposes. You agree not to:\n\n'
-                      '• Use the App in any way that violates applicable laws\n\n'
-                      '• Attempt to reverse engineer, decompile, or disassemble the App\n\n'
-                      '• Interfere with or disrupt the App\'s functionality\n\n'
-                      '• Use automated systems to access the App',
+                          '• Use the App in any way that violates applicable laws\n\n'
+                          '• Attempt to reverse engineer, decompile, or disassemble the App\n\n'
+                          '• Interfere with or disrupt the App\'s functionality\n\n'
+                          '• Use automated systems to access the App',
                     ),
                     const SizedBox(height: 24),
 
@@ -110,9 +116,9 @@ class TermsOfServiceScreen extends StatelessWidget {
                       context,
                       '6. Data Storage and Privacy',
                       '• All data (saved quotes, preferences) is stored locally on your device\n\n'
-                      '• We do not collect, transmit, or store your personal information\n\n'
-                      '• You are responsible for backing up your data if desired\n\n'
-                      '• Uninstalling the app will delete all locally stored data',
+                          '• We do not collect, transmit, or store your personal information\n\n'
+                          '• You are responsible for backing up your data if desired\n\n'
+                          '• Uninstalling the app will delete all locally stored data',
                     ),
                     const SizedBox(height: 24),
 
@@ -120,9 +126,9 @@ class TermsOfServiceScreen extends StatelessWidget {
                       context,
                       '7. Disclaimer of Warranties',
                       'QuickQuote is provided "as is" and "as available" without warranties of any kind, either express or implied. We do not warrant that:\n\n'
-                      '• The App will meet your specific requirements\n\n'
-                      '• The App will be uninterrupted, secure, or error-free\n\n'
-                      '• Any defects will be corrected',
+                          '• The App will meet your specific requirements\n\n'
+                          '• The App will be uninterrupted, secure, or error-free\n\n'
+                          '• Any defects will be corrected',
                     ),
                     const SizedBox(height: 24),
 
@@ -197,4 +203,3 @@ class TermsOfServiceScreen extends StatelessWidget {
     );
   }
 }
-

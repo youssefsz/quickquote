@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -141,81 +142,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
     }
   }
 
-  Widget _buildSettingsButton({
-    required IconData icon,
-    required String title,
-    required String subtitle,
-    required VoidCallback onTap,
-    Color? iconColor,
-  }) {
-    final isDarkMode = context.watch<ThemeProvider>().isDarkMode;
-    final theme = Theme.of(context);
-
-    return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      decoration: BoxDecoration(
-        color: theme.cardTheme.color,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: isDarkMode
-              ? Colors.white.withValues(alpha: 0.1)
-              : Colors.black.withValues(alpha: 0.05),
-          width: 1,
-        ),
-      ),
-      child: CupertinoButton(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0),
-        onPressed: onTap,
-        child: Row(
-          children: [
-            Icon(icon, size: 24, color: iconColor ?? theme.iconTheme.color),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: theme.textTheme.bodyLarge?.copyWith(
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  if (subtitle.isNotEmpty) ...[
-                    const SizedBox(height: 2),
-                    Text(
-                      subtitle,
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        color: isDarkMode
-                            ? AppColors.darkTextSecondary
-                            : AppColors.lightTextSecondary,
-                      ),
-                    ),
-                  ],
-                ],
-              ),
-            ),
-            Icon(
-              CupertinoIcons.chevron_right,
-              size: 20,
-              color: isDarkMode
-                  ? AppColors.darkTextSecondary
-                  : AppColors.lightTextSecondary,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    final isDarkMode = context.watch<ThemeProvider>().isDarkMode;
     final theme = Theme.of(context);
+    final isDarkMode = context.watch<ThemeProvider>().isDarkMode;
 
     return Scaffold(
+      backgroundColor: theme.scaffoldBackgroundColor,
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+          padding: EdgeInsets.fromLTRB(
+            24.0,
+            16.0,
+            24.0,
+            100.0 + MediaQuery.paddingOf(context).bottom,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -229,167 +170,226 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
               const SizedBox(height: 32),
 
-              // Theme Toggle
-              Container(
-                decoration: BoxDecoration(
-                  color: theme.cardTheme.color,
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(
-                    color: isDarkMode
-                        ? Colors.white.withValues(alpha: 0.1)
-                        : Colors.black.withValues(alpha: 0.05),
-                    width: 1,
-                  ),
-                ),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20.0,
-                  vertical: 16.0,
-                ),
-                child: Row(
-                  children: [
-                    Icon(
-                      Theme.of(context).brightness == Brightness.dark
-                          ? CupertinoIcons.moon_fill
-                          : CupertinoIcons.sun_max_fill,
-                      size: 24,
-                      color: theme.iconTheme.color,
-                    ),
-                    const SizedBox(width: 16),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Appearance',
-                          style: theme.textTheme.bodyLarge?.copyWith(
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        const SizedBox(height: 2),
-                        Text(
-                          Theme.of(context).brightness == Brightness.dark
-                              ? 'Dark Mode'
-                              : 'Light Mode',
-                          style: theme.textTheme.bodySmall?.copyWith(
-                            color:
-                                Theme.of(context).brightness == Brightness.dark
-                                ? AppColors.darkTextSecondary
-                                : AppColors.lightTextSecondary,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const Spacer(),
-                    CupertinoSwitch(
-                      value: Theme.of(context).brightness == Brightness.dark,
+              // Preferences Section
+              _buildSection(
+                title: 'PREFERENCES',
+                children: [
+                  _buildTile(
+                    icon: isDarkMode
+                        ? CupertinoIcons.moon_fill
+                        : CupertinoIcons.sun_max_fill,
+                    title: 'Dark Mode',
+                    subtitle: 'Change the app appearance',
+                    trailing: CupertinoSwitch(
+                      value: isDarkMode,
                       activeTrackColor: AppColors.darkAccent,
                       onChanged: (value) {
                         context.read<ThemeProvider>().toggleTheme();
                       },
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-
-              const SizedBox(height: 32),
 
               // Support Section
-              Text(
-                'Support',
-                style: theme.textTheme.titleSmall?.copyWith(
-                  fontWeight: FontWeight.w600,
-                  color: isDarkMode
-                      ? AppColors.darkTextSecondary
-                      : AppColors.lightTextSecondary,
-                  letterSpacing: 0.5,
-                ),
+              _buildSection(
+                title: 'SUPPORT & FEEDBACK',
+                children: [
+                  _buildTile(
+                    icon: CupertinoIcons.chat_bubble_text_fill,
+                    title: 'Support',
+                    subtitle: 'Get help and contact us',
+                    onTap: _launchSupportEmail,
+                  ),
+                  if (Platform.isIOS || Platform.isAndroid || Platform.isMacOS)
+                    _buildTile(
+                      icon: CupertinoIcons.star_fill,
+                      title: 'Rate the App',
+                      subtitle: 'Leave us a review on the store',
+                      onTap: _openStoreListing,
+                    ),
+                ],
               ),
-              const SizedBox(height: 12),
-
-              _buildSettingsButton(
-                icon: CupertinoIcons.chat_bubble_text,
-                title: 'Support',
-                subtitle: 'Get help and contact us',
-                onTap: _launchSupportEmail,
-                iconColor: AppColors.darkAccent,
-              ),
-
-              // Rate the App button - opens store listing directly
-              if (Platform.isIOS || Platform.isAndroid || Platform.isMacOS)
-                _buildSettingsButton(
-                  icon: CupertinoIcons.star,
-                  title: 'Rate the App',
-                  subtitle: 'Leave us a review on the store',
-                  onTap: _openStoreListing,
-                  iconColor: Colors.amber,
-                ),
-
-              const SizedBox(height: 32),
 
               // Legal Section
-              Text(
-                'Legal',
-                style: theme.textTheme.titleSmall?.copyWith(
-                  fontWeight: FontWeight.w600,
-                  color: isDarkMode
-                      ? AppColors.darkTextSecondary
-                      : AppColors.lightTextSecondary,
-                  letterSpacing: 0.5,
-                ),
-              ),
-              const SizedBox(height: 12),
-
-              _buildSettingsButton(
-                icon: CupertinoIcons.doc_text,
-                title: 'Terms of Service',
-                subtitle: 'Read our terms and conditions',
-                onTap: _navigateToTermsOfService,
-              ),
-
-              _buildSettingsButton(
-                icon: CupertinoIcons.lock_shield,
-                title: 'Privacy Policy',
-                subtitle: 'How we protect your privacy',
-                onTap: _navigateToPrivacyPolicy,
+              _buildSection(
+                title: 'LEGAL',
+                children: [
+                  _buildTile(
+                    icon: CupertinoIcons.doc_text_fill,
+                    title: 'Terms of Service',
+                    subtitle: 'Read our terms and conditions',
+                    onTap: _navigateToTermsOfService,
+                  ),
+                  _buildTile(
+                    icon: CupertinoIcons.lock_shield_fill,
+                    title: 'Privacy Policy',
+                    subtitle: 'How we protect your privacy',
+                    onTap: _navigateToPrivacyPolicy,
+                  ),
+                ],
               ),
 
               const SizedBox(height: 32),
 
-              // App Info
-              Center(
-                child: Column(
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(12.0),
-                      child: Image.asset(
-                        'assets/logo/logo.png',
-                        width: 48,
-                        height: 48,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    Text(
-                      'QuickQuote',
-                      style: theme.textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    if (_isLoadingVersion)
-                      const CupertinoActivityIndicator(radius: 8)
-                    else
-                      Text(
-                        'Version ${_packageInfo?.version ?? "1.0.0"} (${_packageInfo?.buildNumber ?? "1"})',
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          color: isDarkMode
-                              ? AppColors.darkTextSecondary
-                              : AppColors.lightTextSecondary,
+              // App Info/Version
+              // About Section
+              _buildSection(
+                title: 'ABOUT',
+                children: [
+                  _buildTile(
+                    icon: CupertinoIcons.info_circle_fill,
+                    title: 'Version',
+                    trailing: _isLoadingVersion
+                        ? const CupertinoActivityIndicator(radius: 8)
+                        : Text(
+                            '${_packageInfo?.version ?? "1.0.0"} (${_packageInfo?.buildNumber ?? "1"})',
+                            style: TextStyle(
+                              color: isDarkMode
+                                  ? Colors.white.withValues(alpha: 0.5)
+                                  : Colors.black.withValues(alpha: 0.5),
+                              fontSize: 17,
+                            ),
+                          ),
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: 20),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSection({
+    required String title,
+    required List<Widget> children,
+  }) {
+    final theme = Theme.of(context);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 16, bottom: 8),
+          child: Text(
+            title,
+            style: theme.textTheme.bodySmall?.copyWith(
+              fontSize: 13,
+              fontWeight: FontWeight.w600,
+              color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+              letterSpacing: -0.08,
+            ),
+          ),
+        ),
+        Container(
+          decoration: BoxDecoration(
+            color: theme.cardTheme.color,
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Column(
+            children: children.asMap().entries.map((entry) {
+              final index = entry.key;
+              final child = entry.value;
+              final isLast = index == children.length - 1;
+
+              return Column(
+                children: [
+                  child,
+                  if (!isLast)
+                    Padding(
+                      padding: const EdgeInsets.only(left: 54),
+                      child: Divider(
+                        height: 0.5,
+                        thickness: 0.5,
+                        color: theme.colorScheme.onSurface.withValues(
+                          alpha: 0.1,
                         ),
                       ),
+                    ),
+                ],
+              );
+            }).toList(),
+          ),
+        ),
+        const SizedBox(height: 24),
+      ],
+    );
+  }
+
+  Widget _buildTile({
+    required IconData icon,
+    required String title,
+    String? subtitle,
+    Widget? trailing,
+    VoidCallback? onTap,
+    bool isDestructive = false,
+  }) {
+    final theme = Theme.of(context);
+
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(20),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          child: Row(
+            children: [
+              // Icon
+              Icon(
+                icon,
+                size: 22,
+                color: isDestructive
+                    ? CupertinoColors.destructiveRed
+                    : theme.iconTheme.color,
+              ),
+              const SizedBox(width: 16),
+
+              // Text Content
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: theme.textTheme.bodyLarge?.copyWith(
+                        fontSize: 17,
+                        fontWeight: FontWeight.w400,
+                        color: isDestructive
+                            ? CupertinoColors.destructiveRed
+                            : theme.textTheme.bodyLarge?.color,
+                      ),
+                    ),
+                    if (subtitle != null) ...[
+                      const SizedBox(height: 2),
+                      Text(
+                        subtitle,
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          fontSize: 13,
+                          color: theme.colorScheme.onSurface.withValues(
+                            alpha: 0.6,
+                          ),
+                        ),
+                      ),
+                    ],
                   ],
                 ),
               ),
-              const SizedBox(height: 32),
+
+              const SizedBox(width: 8),
+
+              // Trailing
+              if (trailing != null)
+                trailing
+              else
+                Icon(
+                  CupertinoIcons.chevron_right,
+                  size: 20,
+                  color: theme.colorScheme.onSurface.withValues(alpha: 0.3),
+                ),
             ],
           ),
         ),

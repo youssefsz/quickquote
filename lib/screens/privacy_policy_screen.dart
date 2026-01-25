@@ -17,7 +17,10 @@ class PrivacyPolicyScreen extends StatelessWidget {
           children: [
             // Header
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 24.0,
+                vertical: 16.0,
+              ),
               child: Row(
                 children: [
                   CupertinoButton(
@@ -44,7 +47,10 @@ class PrivacyPolicyScreen extends StatelessWidget {
             // Content
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 24.0,
+                  vertical: 16.0,
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -69,9 +75,9 @@ class PrivacyPolicyScreen extends StatelessWidget {
                       context,
                       '2. Information We Collect',
                       'QuickQuote is designed with privacy in mind. We collect minimal information:\n\n'
-                      '• Quotes and Content: Quotes you add or save are stored locally on your device using device storage.\n\n'
-                      '• Preferences: Theme preferences (light/dark mode) are stored locally on your device.\n\n'
-                      '• App Usage: We do not track your usage patterns, browsing history, or personal information.',
+                          '• Quotes and Content: Quotes you add or save are stored locally on your device using device storage.\n\n'
+                          '• Preferences: Theme preferences (light/dark mode) are stored locally on your device.\n\n'
+                          '• App Usage: We do not track your usage patterns, browsing history, or personal information.',
                     ),
                     const SizedBox(height: 24),
 
@@ -79,9 +85,9 @@ class PrivacyPolicyScreen extends StatelessWidget {
                       context,
                       '3. Local Storage',
                       'All data in QuickQuote is stored locally on your device:\n\n'
-                      '• Saved quotes are stored using local device storage (SharedPreferences)\n\n'
-                      '• Your quotes, preferences, and settings never leave your device\n\n'
-                      '• We do not use cloud storage or sync your data to external servers',
+                          '• Saved quotes are stored using local device storage (SharedPreferences)\n\n'
+                          '• Your quotes, preferences, and settings never leave your device\n\n'
+                          '• We do not use cloud storage or sync your data to external servers',
                     ),
                     const SizedBox(height: 24),
 
@@ -89,11 +95,11 @@ class PrivacyPolicyScreen extends StatelessWidget {
                       context,
                       '4. Data Collection and Sharing',
                       'We do not:\n\n'
-                      '• Collect personal information\n\n'
-                      '• Share data with third parties\n\n'
-                      '• Use analytics or tracking services\n\n'
-                      '• Access your contacts, photos, or other personal data\n\n'
-                      '• Use cookies or similar tracking technologies',
+                          '• Collect personal information\n\n'
+                          '• Share data with third parties\n\n'
+                          '• Use analytics or tracking services\n\n'
+                          '• Access your contacts, photos, or other personal data\n\n'
+                          '• Use cookies or similar tracking technologies',
                     ),
                     const SizedBox(height: 24),
 
@@ -101,8 +107,8 @@ class PrivacyPolicyScreen extends StatelessWidget {
                       context,
                       '5. Permissions',
                       'QuickQuote may request the following permissions:\n\n'
-                      '• Storage Permission: Only used to store your saved quotes and preferences locally on your device. This data remains on your device and is never transmitted.\n\n'
-                      'We do not require internet access or network permissions for core functionality.',
+                          '• Storage Permission: Only used to store your saved quotes and preferences locally on your device. This data remains on your device and is never transmitted.\n\n'
+                          'We do not require internet access or network permissions for core functionality.',
                     ),
                     const SizedBox(height: 24),
 
@@ -131,9 +137,9 @@ class PrivacyPolicyScreen extends StatelessWidget {
                       context,
                       '9. Your Rights',
                       'Since all data is stored locally on your device, you have full control:\n\n'
-                      '• You can delete saved quotes at any time\n\n'
-                      '• You can clear all app data through your device settings\n\n'
-                      '• You can uninstall the app at any time, which will remove all locally stored data',
+                          '• You can delete saved quotes at any time\n\n'
+                          '• You can clear all app data through your device settings\n\n'
+                          '• You can uninstall the app at any time, which will remove all locally stored data',
                     ),
                     const SizedBox(height: 24),
 
@@ -180,4 +186,3 @@ class PrivacyPolicyScreen extends StatelessWidget {
     );
   }
 }
-

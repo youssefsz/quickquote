@@ -90,10 +90,16 @@ class ThemeProvider with ChangeNotifier {
   }
 
   Future<void> toggleTheme() async {
-    if (_themeMode == ThemeMode.light) {
-      _themeMode = ThemeMode.dark;
+    if (_themeMode == ThemeMode.system) {
+      final brightness =
+          WidgetsBinding.instance.platformDispatcher.platformBrightness;
+      _themeMode = brightness == Brightness.dark
+          ? ThemeMode.light
+          : ThemeMode.dark;
     } else {
-      _themeMode = ThemeMode.light;
+      _themeMode = _themeMode == ThemeMode.light
+          ? ThemeMode.dark
+          : ThemeMode.light;
     }
     notifyListeners();
     final prefs = await SharedPreferences.getInstance();

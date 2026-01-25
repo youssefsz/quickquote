@@ -14,8 +14,8 @@ class ReviewService {
   static const String _hasRequestedReviewKey = 'has_requested_review';
   static const int _reviewTriggerThreshold = 3;
 
-  // App Store ID for iOS - TODO: Replace with actual App Store ID
-  static const String _appStoreId = 'YOUR_APP_STORE_ID';
+  // App Store ID for iOS
+  static const String _appStoreId = '6755724502';
 
   final InAppReview _inAppReview = InAppReview.instance;
 

@@ -4,7 +4,7 @@ import '../models/quote.dart';
 import '../services/share_service.dart';
 
 /// A beautiful, Apple-style share button widget
-/// 
+///
 /// Features:
 /// - Smooth hover/tap animations
 /// - Apple design aesthetics
@@ -46,10 +46,7 @@ class _ShareQuoteButtonState extends State<ShareQuoteButton>
       vsync: this,
     );
     _scaleAnimation = Tween<double>(begin: 1.0, end: 0.92).animate(
-      CurvedAnimation(
-        parent: _animationController,
-        curve: Curves.easeInOut,
-      ),
+      CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
     );
   }
 
@@ -63,9 +60,10 @@ class _ShareQuoteButtonState extends State<ShareQuoteButton>
     // Get the position of this widget for iPad support
     final renderBox = context.findRenderObject() as RenderBox?;
     Rect? sharePositionOrigin;
-    
+
     if (renderBox != null) {
-      sharePositionOrigin = renderBox.localToGlobal(Offset.zero) & renderBox.size;
+      sharePositionOrigin =
+          renderBox.localToGlobal(Offset.zero) & renderBox.size;
     }
 
     try {
@@ -89,7 +87,8 @@ class _ShareQuoteButtonState extends State<ShareQuoteButton>
     final iconSize = widget.size ?? 24.0;
     final buttonPadding = widget.padding ?? const EdgeInsets.all(8.0);
 
-    final defaultIconColor = widget.iconColor ??
+    final defaultIconColor =
+        widget.iconColor ??
         (isDarkMode
             ? theme.iconTheme.color?.withValues(alpha: 0.9)
             : theme.iconTheme.color?.withValues(alpha: 0.8));
@@ -115,8 +114,8 @@ class _ShareQuoteButtonState extends State<ShareQuoteButton>
           decoration: BoxDecoration(
             color: _isPressed
                 ? (isDarkMode
-                    ? Colors.white.withValues(alpha: 0.1)
-                    : Colors.black.withValues(alpha: 0.05))
+                      ? Colors.white.withValues(alpha: 0.1)
+                      : Colors.black.withValues(alpha: 0.05))
                 : Colors.transparent,
             borderRadius: BorderRadius.circular(10),
           ),
@@ -195,13 +194,14 @@ class ProminentShareButton extends StatelessWidget {
         return CupertinoButton(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
           borderRadius: BorderRadius.circular(14),
-          color: theme.colorScheme.primary.withValues(alpha: 0.15),
+          color: theme.colorScheme.primary,
           onPressed: () async {
             final renderBox = context.findRenderObject() as RenderBox?;
             Rect? sharePositionOrigin;
-            
+
             if (renderBox != null) {
-              sharePositionOrigin = renderBox.localToGlobal(Offset.zero) & renderBox.size;
+              sharePositionOrigin =
+                  renderBox.localToGlobal(Offset.zero) & renderBox.size;
             }
 
             final shareService = this.shareService ?? ShareService();
@@ -214,16 +214,12 @@ class ProminentShareButton extends StatelessWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(
-                CupertinoIcons.share,
-                size: 20,
-                color: theme.colorScheme.primary,
-              ),
+              const Icon(CupertinoIcons.share, size: 20, color: Colors.white),
               const SizedBox(width: 8),
               Text(
                 'Share Quote',
                 style: theme.textTheme.bodyLarge?.copyWith(
-                  color: theme.colorScheme.primary,
+                  color: Colors.white,
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -234,4 +230,3 @@ class ProminentShareButton extends StatelessWidget {
     );
   }
 }
-

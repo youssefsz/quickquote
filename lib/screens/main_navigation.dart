@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:cupertino_native/cupertino_native.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -8,21 +11,71 @@ import 'home_screen.dart';
 import 'saved_screen.dart';
 import 'settings_screen.dart';
 
-class MainNavigation extends StatelessWidget {
+class MainNavigation extends StatefulWidget {
   const MainNavigation({super.key});
 
-  // Create static keys to ensure screens maintain their state
-  static final GlobalKey<NavigatorState> _homeKey = GlobalKey<NavigatorState>();
-  static final GlobalKey<NavigatorState> _savedKey =
-      GlobalKey<NavigatorState>();
-  static final GlobalKey<NavigatorState> _settingsKey =
-      GlobalKey<NavigatorState>();
+  @override
+  State<MainNavigation> createState() => _MainNavigationState();
+}
+
+class _MainNavigationState extends State<MainNavigation> {
+  int _currentIndex = 0;
+
+  // Check if we're on Apple platform (iOS or macOS)
+  bool get _isApplePlatform => Platform.isIOS || Platform.isMacOS;
+
+  Widget _buildCurrentScreen() {
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) async {
+        if (didPop) return;
+        final shouldExit = await ExitDialog.show(context);
+        if (shouldExit == true && context.mounted) {
+          SystemNavigator.pop();
+        }
+      },
+      child: IndexedStack(
+        index: _currentIndex,
+        children: const [HomeScreen(), SavedScreen(), SettingsScreen()],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     final isDarkMode = context.watch<ThemeProvider>().isDarkMode;
 
-    // Use Theme.of(context) to inherit MaterialApp's theme animation
+    // Use native Liquid Glass CNTabBar on Apple platforms
+    if (_isApplePlatform) {
+      return Scaffold(
+        body: Stack(
+          children: [
+            // Main content
+            _buildCurrentScreen(),
+            // Native Liquid Glass Tab Bar at the bottom
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: MediaQuery.of(context).padding.bottom,
+              child: CNTabBar(
+                items: const [
+                  CNTabBarItem(label: 'Home', icon: CNSymbol('house.fill')),
+                  CNTabBarItem(label: 'Saved', icon: CNSymbol('heart.fill')),
+                  CNTabBarItem(
+                    label: 'Settings',
+                    icon: CNSymbol('gearshape.fill'),
+                  ),
+                ],
+                currentIndex: _currentIndex,
+                onTap: (index) => setState(() => _currentIndex = index),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    // Fallback to standard Cupertino tab navigation for other platforms
     return CupertinoTabScaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       tabBar: CupertinoTabBar(
@@ -57,87 +110,10 @@ class MainNavigation extends StatelessWidget {
             label: 'Settings',
           ),
         ],
+        onTap: (index) => setState(() => _currentIndex = index),
       ),
       tabBuilder: (context, index) {
-        // Use CupertinoTabView with onGenerateRoute to properly handle back navigation
-        switch (index) {
-          case 0:
-            return CupertinoTabView(
-              key: _homeKey,
-              onGenerateRoute: (settings) {
-                return CupertinoPageRoute(
-                  builder: (context) => PopScope(
-                    canPop: false,
-                    onPopInvokedWithResult: (didPop, result) async {
-                      if (didPop) return;
-                      final shouldExit = await ExitDialog.show(context);
-                      if (shouldExit == true && context.mounted) {
-                        SystemNavigator.pop();
-                      }
-                    },
-                    child: const HomeScreen(),
-                  ),
-                );
-              },
-            );
-          case 1:
-            return CupertinoTabView(
-              key: _savedKey,
-              onGenerateRoute: (settings) {
-                return CupertinoPageRoute(
-                  builder: (context) => PopScope(
-                    canPop: false,
-                    onPopInvokedWithResult: (didPop, result) async {
-                      if (didPop) return;
-                      final shouldExit = await ExitDialog.show(context);
-                      if (shouldExit == true && context.mounted) {
-                        SystemNavigator.pop();
-                      }
-                    },
-                    child: const SavedScreen(),
-                  ),
-                );
-              },
-            );
-          case 2:
-            return CupertinoTabView(
-              key: _settingsKey,
-              onGenerateRoute: (settings) {
-                return CupertinoPageRoute(
-                  builder: (context) => PopScope(
-                    canPop: false,
-                    onPopInvokedWithResult: (didPop, result) async {
-                      if (didPop) return;
-                      final shouldExit = await ExitDialog.show(context);
-                      if (shouldExit == true && context.mounted) {
-                        SystemNavigator.pop();
-                      }
-                    },
-                    child: const SettingsScreen(),
-                  ),
-                );
-              },
-            );
-          default:
-            return CupertinoTabView(
-              key: _homeKey,
-              onGenerateRoute: (settings) {
-                return CupertinoPageRoute(
-                  builder: (context) => PopScope(
-                    canPop: false,
-                    onPopInvokedWithResult: (didPop, result) async {
-                      if (didPop) return;
-                      final shouldExit = await ExitDialog.show(context);
-                      if (shouldExit == true && context.mounted) {
-                        SystemNavigator.pop();
-                      }
-                    },
-                    child: const HomeScreen(),
-                  ),
-                );
-              },
-            );
-        }
+        return _buildCurrentScreen();
       },
     );
   }

@@ -33,14 +33,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.13.0"
-  auto_size_text:
-    dependency: transitive
-    description:
-      name: auto_size_text
-      sha256: "3f5261cd3fb5f2a9ab4e2fc3fba84fd9fcaac8821f20a1d4e71f557521b22599"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.0.0"
   boolean_selector:
     dependency: transitive
     description:
@@ -65,14 +57,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.4"
-  circular_theme_reveal:
-    dependency: "direct main"
-    description:
-      name: circular_theme_reveal
-      sha256: c0fbae97143c376016d645d59282c93951d17a8ae9c3cf2cfcc60db761a2edb3
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.2"
   cli_util:
     dependency: transitive
     description:
@@ -129,6 +113,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.8"
+  cupertino_native:
+    dependency: "direct main"
+    description:
+      name: cupertino_native
+      sha256: "5f42e85a091797afb86bb30a25fffd7188335de97278fa4bb80c0f564c874e89"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.1"
   fake_async:
     dependency: transitive
     description:
@@ -384,14 +376,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "9.1.0"
-  onboarding_overlay:
-    dependency: "direct main"
-    description:
-      name: onboarding_overlay
-      sha256: e0a3699846f9c2d9f61bba47b29a63a485922b18d49d161d30afb0d4b187fc64
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.2.3"
   package_info_plus:
     dependency: "direct main"
     description:
