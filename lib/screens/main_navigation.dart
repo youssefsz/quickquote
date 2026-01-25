@@ -45,6 +45,10 @@ class _MainNavigationState extends State<MainNavigation> {
   Widget build(BuildContext context) {
     final isDarkMode = context.watch<ThemeProvider>().isDarkMode;
 
+    // Check for iPad or large screens to adjust layout
+    // Using shortestSide > 600 is a standard way to detect tablets
+    final isIpad = MediaQuery.of(context).size.shortestSide > 600;
+
     // Use native Liquid Glass CNTabBar on Apple platforms
     if (_isApplePlatform) {
       return Scaffold(
@@ -56,18 +60,40 @@ class _MainNavigationState extends State<MainNavigation> {
             Positioned(
               left: 0,
               right: 0,
-              bottom: MediaQuery.of(context).padding.bottom,
-              child: CNTabBar(
-                items: const [
-                  CNTabBarItem(label: 'Home', icon: CNSymbol('house.fill')),
-                  CNTabBarItem(label: 'Saved', icon: CNSymbol('heart.fill')),
-                  CNTabBarItem(
-                    label: 'Settings',
-                    icon: CNSymbol('gearshape.fill'),
+              // Add extra bottom padding on iPad for a better floating look
+              // Compensate for the scale growing downwards
+              bottom: MediaQuery.of(context).padding.bottom + (isIpad ? 40 : 0),
+              child: Center(
+                child: Transform.scale(
+                  // Scale up on iPad to make it readable and touch-friendly
+                  // This is the best fix to keep the specific 'Liquid Glass' design but make it usable
+                  scale: isIpad ? 1.5 : 1.0,
+                  child: ConstrainedBox(
+                    // Constrain width on iPad so it doesn't stretch too wide
+                    // Adjusted for the scale factor (visual width ≈ 525)
+                    constraints: BoxConstraints(
+                      maxWidth: isIpad ? 400 : double.infinity,
+                    ),
+                    child: CNTabBar(
+                      items: const [
+                        CNTabBarItem(
+                          label: 'Home',
+                          icon: CNSymbol('house.fill'),
+                        ),
+                        CNTabBarItem(
+                          label: 'Saved',
+                          icon: CNSymbol('heart.fill'),
+                        ),
+                        CNTabBarItem(
+                          label: 'Settings',
+                          icon: CNSymbol('gearshape.fill'),
+                        ),
+                      ],
+                      currentIndex: _currentIndex,
+                      onTap: (index) => setState(() => _currentIndex = index),
+                    ),
                   ),
-                ],
-                currentIndex: _currentIndex,
-                onTap: (index) => setState(() => _currentIndex = index),
+                ),
               ),
             ),
           ],

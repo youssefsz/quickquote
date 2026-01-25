@@ -61,28 +61,28 @@ class QuoteDetailScreen extends StatelessWidget {
                               children: [
                                 // Close Button - Inside the card
                                 Positioned(
-                                  top: 12,
-                                  right: 12,
+                                  top: 16,
+                                  right: 16,
                                   child: GestureDetector(
                                     onTap: () => Navigator.of(context).pop(),
                                     child: Container(
-                                      padding: const EdgeInsets.all(8),
+                                      padding: const EdgeInsets.all(12),
                                       decoration: BoxDecoration(
                                         color:
                                             theme.brightness == Brightness.dark
                                             ? Colors.white.withValues(
-                                                alpha: 0.1,
+                                                alpha: 0.15,
                                               )
                                             : Colors.black.withValues(
-                                                alpha: 0.05,
+                                                alpha: 0.08,
                                               ),
                                         shape: BoxShape.circle,
                                       ),
                                       child: Icon(
                                         CupertinoIcons.xmark,
-                                        size: 18,
+                                        size: 24,
                                         color: theme.iconTheme.color
-                                            ?.withValues(alpha: 0.6),
+                                            ?.withValues(alpha: 0.8),
                                       ),
                                     ),
                                   ),
