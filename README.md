@@ -35,13 +35,13 @@ Get QuickQuote on the App Store:
 
 | Home | Saved | Settings |
 |:---:|:---:|:---:|
-| <img src="landing-page/imgs/screenshots/light/home.jpeg" width="250"> | <img src="landing-page/imgs/screenshots/light/saved.jpeg" width="250"> | <img src="landing-page/imgs/screenshots/light/settigns.jpeg" width="250"> |
+| <img src="landing-page/imgs/screenshots/light/home.png" width="250"> | <img src="landing-page/imgs/screenshots/light/saved.png" width="250"> | <img src="landing-page/imgs/screenshots/light/settigns.png" width="250"> |
 
 ### Dark Mode
 
 | Home | Saved | Settings |
 |:---:|:---:|:---:|
-| <img src="landing-page/imgs/screenshots/dark/home.jpeg" width="250"> | <img src="landing-page/imgs/screenshots/dark/saved.jpeg" width="250"> | <img src="landing-page/imgs/screenshots/dark/settings.jpeg" width="250"> |
+| <img src="landing-page/imgs/screenshots/dark/home.png" width="250"> | <img src="landing-page/imgs/screenshots/dark/saved.png" width="250"> | <img src="landing-page/imgs/screenshots/dark/settings.png" width="250"> |
 
 ## Getting Started
 
