@@ -35,7 +35,7 @@ Get QuickQuote on the App Store:
 
 | Home | Saved | Settings |
 |:---:|:---:|:---:|
-| <img src="landing-page/imgs/screenshots/light/home.png" width="250"> | <img src="landing-page/imgs/screenshots/light/saved.png" width="250"> | <img src="landing-page/imgs/screenshots/light/settigns.png" width="250"> |
+| <img src="landing-page/imgs/screenshots/light/home.png" width="250"> | <img src="landing-page/imgs/screenshots/light/saved.png" width="250"> | <img src="landing-page/imgs/screenshots/light/settings.png" width="250"> |
 
 ### Dark Mode
 
