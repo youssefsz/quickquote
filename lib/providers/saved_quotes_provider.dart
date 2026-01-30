@@ -27,6 +27,12 @@ class SavedQuotesProvider with ChangeNotifier {
   Set<String> get selectedQuoteIds => _selectedQuoteIds;
   bool get isSelectionMode => _selectedQuoteIds.isNotEmpty;
   int get selectedCount => _selectedQuoteIds.length;
+  
+  /// Check if all currently filtered quotes are selected
+  bool get isAllSelected {
+    if (_allFilteredQuotes.isEmpty) return false;
+    return _selectedQuoteIds.length == _allFilteredQuotes.length;
+  }
 
   SavedQuotesProvider() {
     loadSavedQuotes();

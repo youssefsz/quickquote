@@ -201,65 +201,68 @@ class _SavedScreenState extends State<SavedScreen> {
   }
 
   Widget _buildHeader(ThemeData theme, bool isDarkMode) {
-    return Row(
+    return SizedBox(
       key: const ValueKey('header'),
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          'Saved Quotes',
-          style: theme.textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-            letterSpacing: -0.5,
+      height: 44,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            'Saved Quotes',
+            style: theme.textTheme.titleLarge?.copyWith(
+              fontWeight: FontWeight.bold,
+              letterSpacing: -0.5,
+            ),
           ),
-        ),
-        Row(
-          children: [
-            // Theme toggle
-            Builder(
-              builder: (context) {
-                return LightDarkThemeToggle(
-                  value: Theme.of(context).brightness != Brightness.dark,
-                  onChanged: (_) {
-                    context.read<ThemeProvider>().toggleTheme();
-                  },
-                  themeIconType: ThemeIconType.classic,
-                  size: 28,
-                );
-              },
-            ),
-            const SizedBox(width: 16),
-            // Search button
-            CupertinoButton(
-              padding: EdgeInsets.zero,
-              minSize: 0,
-              onPressed: _toggleSearch,
-              child: Container(
-                padding: const EdgeInsets.all(8),
-                child: Icon(
-                  CupertinoIcons.search,
-                  size: 24,
-                  color: theme.iconTheme.color,
+          Row(
+            children: [
+              // Theme toggle
+              Builder(
+                builder: (context) {
+                  return LightDarkThemeToggle(
+                    value: Theme.of(context).brightness != Brightness.dark,
+                    onChanged: (_) {
+                      context.read<ThemeProvider>().toggleTheme();
+                    },
+                    themeIconType: ThemeIconType.classic,
+                    size: 28,
+                  );
+                },
+              ),
+              const SizedBox(width: 16),
+              // Search button
+              CupertinoButton(
+                padding: EdgeInsets.zero,
+                minSize: 0,
+                onPressed: _toggleSearch,
+                child: Container(
+                  padding: const EdgeInsets.all(8),
+                  child: Icon(
+                    CupertinoIcons.search,
+                    size: 24,
+                    color: theme.iconTheme.color,
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(width: 16),
-            // Filter button
-            CupertinoButton(
-              padding: EdgeInsets.zero,
-              minSize: 0,
-              onPressed: () => _showFilterOptions(context),
-              child: Container(
-                padding: const EdgeInsets.all(8),
-                child: Icon(
-                  CupertinoIcons.sort_down,
-                  size: 24,
-                  color: theme.iconTheme.color,
+              const SizedBox(width: 16),
+              // Filter button
+              CupertinoButton(
+                padding: EdgeInsets.zero,
+                minSize: 0,
+                onPressed: () => _showFilterOptions(context),
+                child: Container(
+                  padding: const EdgeInsets.all(8),
+                  child: Icon(
+                    CupertinoIcons.sort_down,
+                    size: 24,
+                    color: theme.iconTheme.color,
+                  ),
                 ),
               ),
-            ),
-          ],
-        ),
-      ],
+            ],
+          ),
+        ],
+      ),
     );
   }
 
@@ -268,75 +271,167 @@ class _SavedScreenState extends State<SavedScreen> {
     bool isDarkMode,
     SavedQuotesProvider provider,
   ) {
-    return Row(
+    return SizedBox(
       key: const ValueKey('search'),
-      children: [
-        // Search input field
-        Expanded(
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.easeInOut,
-            decoration: BoxDecoration(
-              color: theme.cardTheme.color,
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(
-                color: isDarkMode
-                    ? Colors.white.withValues(alpha: 0.1)
-                    : Colors.black.withValues(alpha: 0.05),
-                width: 1,
-              ),
-            ),
-            child: CupertinoTextField(
-              controller: _searchController,
-              focusNode: _searchFocusNode,
-              placeholder: 'Search quotes or authors...',
-              placeholderStyle: theme.textTheme.bodyMedium?.copyWith(
-                color: theme.textTheme.bodyMedium?.color?.withValues(
-                  alpha: 0.4,
+      height: 44,
+      child: Row(
+        children: [
+          // Search input field
+          Expanded(
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeInOut,
+              decoration: BoxDecoration(
+                color: theme.cardTheme.color,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: isDarkMode
+                      ? Colors.white.withValues(alpha: 0.1)
+                      : Colors.black.withValues(alpha: 0.05),
+                  width: 1,
                 ),
               ),
-              style: theme.textTheme.bodyMedium,
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-              decoration: const BoxDecoration(),
-              onChanged: (value) {
-                provider.setSearchQuery(value);
-                // Reset scroll position when search changes
-                if (_scrollController.hasClients) {
-                  _scrollController.animateTo(
-                    0,
-                    duration: const Duration(milliseconds: 300),
-                    curve: Curves.easeOut,
-                  );
-                }
-              },
-              prefix: Padding(
-                padding: const EdgeInsets.only(left: 12),
-                child: Icon(
-                  CupertinoIcons.search,
-                  size: 20,
+              child: CupertinoTextField(
+                controller: _searchController,
+                focusNode: _searchFocusNode,
+                placeholder: 'Search quotes or authors...',
+                placeholderStyle: theme.textTheme.bodyMedium?.copyWith(
                   color: theme.textTheme.bodyMedium?.color?.withValues(
-                    alpha: 0.5,
+                    alpha: 0.4,
+                  ),
+                ),
+                style: theme.textTheme.bodyMedium,
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                decoration: const BoxDecoration(),
+                onChanged: (value) {
+                  provider.setSearchQuery(value);
+                  // Reset scroll position when search changes
+                  if (_scrollController.hasClients) {
+                    _scrollController.animateTo(
+                      0,
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeOut,
+                    );
+                  }
+                },
+                prefix: Padding(
+                  padding: const EdgeInsets.only(left: 12),
+                  child: Icon(
+                    CupertinoIcons.search,
+                    size: 20,
+                    color: theme.textTheme.bodyMedium?.color?.withValues(
+                      alpha: 0.5,
+                    ),
                   ),
                 ),
               ),
             ),
           ),
-        ),
-        const SizedBox(width: 8),
-        // Cancel button
-        CupertinoButton(
-          padding: EdgeInsets.zero,
-          minSize: 0,
-          onPressed: _toggleSearch,
-          child: Text(
-            'Cancel',
-            style: theme.textTheme.bodyLarge?.copyWith(
-              color: theme.colorScheme.primary,
-              fontWeight: FontWeight.w500,
+          const SizedBox(width: 8),
+          // Cancel button
+          CupertinoButton(
+            padding: EdgeInsets.zero,
+            minSize: 0,
+            onPressed: _toggleSearch,
+            child: Text(
+              'Cancel',
+              style: theme.textTheme.bodyLarge?.copyWith(
+                color: theme.colorScheme.primary,
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSelectionHeader(
+    ThemeData theme,
+    SavedQuotesProvider provider,
+  ) {
+    final isAllSelected = provider.isAllSelected;
+
+    return SizedBox(
+      key: const ValueKey('selection_header'),
+      height: 44,
+      child: Row(
+        children: [
+          // Cancel Button
+          CupertinoButton(
+            padding: EdgeInsets.zero,
+            minSize: 0,
+            onPressed: () => provider.clearSelection(),
+            child: Text(
+              'Cancel',
+              style: theme.textTheme.bodyLarge?.copyWith(
+                color: theme.colorScheme.primary,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+          
+          Expanded(
+            child: Text(
+              '${provider.selectedCount} Selected',
+              textAlign: TextAlign.center,
+              style: theme.textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+
+          // Actions
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Select/Deselect All Button
+              CupertinoButton(
+                padding: EdgeInsets.zero,
+                minSize: 0,
+                onPressed: () {
+                  if (isAllSelected) {
+                    provider.clearSelection();
+                  } else {
+                    provider.selectAllQuotes();
+                  }
+                },
+                child: Text(
+                  isAllSelected ? 'Deselect All' : 'Select All',
+                  style: theme.textTheme.bodyLarge?.copyWith(
+                    color: theme.colorScheme.primary,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 16),
+              // Delete Button
+              CupertinoButton(
+                padding: EdgeInsets.zero,
+                minSize: 0,
+                onPressed: provider.selectedCount > 0
+                    ? () async {
+                        final confirm = await _showDeleteSelectedConfirmation(
+                          context,
+                          provider.selectedCount,
+                        );
+                        if (confirm == true) {
+                          await provider.removeSelectedQuotes();
+                        }
+                      }
+                    : null,
+                child: Icon(
+                  CupertinoIcons.trash,
+                  color: provider.selectedCount > 0 
+                      ? Colors.red.withValues(alpha: 0.8)
+                      : theme.disabledColor,
+                  size: 22,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 
@@ -346,12 +441,22 @@ class _SavedScreenState extends State<SavedScreen> {
     final theme = Theme.of(context);
     final provider = context.watch<SavedQuotesProvider>();
 
+    // Determine which header to show
+    Widget headerWidget;
+    if (provider.isSelectionMode) {
+      headerWidget = _buildSelectionHeader(theme, provider);
+    } else if (_isSearchActive) {
+      headerWidget = _buildSearchBar(theme, isDarkMode, provider);
+    } else {
+      headerWidget = _buildHeader(theme, isDarkMode);
+    }
+
     return Scaffold(
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Header with animated search
+            // Header with animated search/selection
             Padding(
               padding: const EdgeInsets.only(
                 left: 24.0,
@@ -381,9 +486,7 @@ class _SavedScreenState extends State<SavedScreen> {
                     ),
                   );
                 },
-                child: _isSearchActive
-                    ? _buildSearchBar(theme, isDarkMode, provider)
-                    : _buildHeader(theme, isDarkMode),
+                child: headerWidget,
               ),
             ),
 
@@ -414,24 +517,6 @@ class _SavedScreenState extends State<SavedScreen> {
                 },
               ),
             ),
-
-            // Selection mode action bar
-            if (provider.isSelectionMode)
-              _SelectionActionBar(
-                selectedCount: provider.selectedCount,
-                onDelete: () async {
-                  final confirm = await _showDeleteSelectedConfirmation(
-                    context,
-                    provider.selectedCount,
-                  );
-                  if (confirm == true) {
-                    await provider.removeSelectedQuotes();
-                  }
-                },
-                onCancel: () {
-                  provider.clearSelection();
-                },
-              ),
           ],
         ),
       ),
@@ -565,71 +650,7 @@ class _SavedScreenState extends State<SavedScreen> {
   }
 }
 
-class _SelectionActionBar extends StatelessWidget {
-  final int selectedCount;
-  final VoidCallback onDelete;
-  final VoidCallback onCancel;
 
-  const _SelectionActionBar({
-    required this.selectedCount,
-    required this.onDelete,
-    required this.onCancel,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final isDarkMode = theme.brightness == Brightness.dark;
-
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-      decoration: BoxDecoration(
-        color: theme.cardTheme.color,
-        border: Border(
-          top: BorderSide(
-            color: isDarkMode
-                ? Colors.white.withValues(alpha: 0.1)
-                : Colors.black.withValues(alpha: 0.05),
-            width: 1,
-          ),
-        ),
-      ),
-      child: SafeArea(
-        top: false,
-        child: Row(
-          children: [
-            Text(
-              '$selectedCount selected',
-              style: theme.textTheme.bodyMedium?.copyWith(
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            const Spacer(),
-            CupertinoButton(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              onPressed: onCancel,
-              child: const Text('Cancel'),
-            ),
-            const SizedBox(width: 8),
-            CupertinoButton(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              color: Colors.red.withValues(alpha: 0.9),
-              borderRadius: BorderRadius.circular(12),
-              onPressed: onDelete,
-              child: const Text(
-                'Delete',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
 
 class _SavedQuoteCard extends StatelessWidget {
   final Quote quote;
