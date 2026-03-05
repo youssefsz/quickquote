@@ -301,7 +301,10 @@ class _SavedScreenState extends State<SavedScreen> {
                   ),
                 ),
                 style: theme.textTheme.bodyMedium,
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 10,
+                ),
                 decoration: const BoxDecoration(),
                 onChanged: (value) {
                   provider.setSearchQuery(value);
@@ -346,10 +349,7 @@ class _SavedScreenState extends State<SavedScreen> {
     );
   }
 
-  Widget _buildSelectionHeader(
-    ThemeData theme,
-    SavedQuotesProvider provider,
-  ) {
+  Widget _buildSelectionHeader(ThemeData theme, SavedQuotesProvider provider) {
     final isAllSelected = provider.isAllSelected;
 
     return SizedBox(
@@ -370,7 +370,7 @@ class _SavedScreenState extends State<SavedScreen> {
               ),
             ),
           ),
-          
+
           Expanded(
             child: Text(
               '${provider.selectedCount} Selected',
@@ -422,7 +422,7 @@ class _SavedScreenState extends State<SavedScreen> {
                     : null,
                 child: Icon(
                   CupertinoIcons.trash,
-                  color: provider.selectedCount > 0 
+                  color: provider.selectedCount > 0
                       ? Colors.red.withValues(alpha: 0.8)
                       : theme.disabledColor,
                   size: 22,
@@ -649,8 +649,6 @@ class _SavedScreenState extends State<SavedScreen> {
     );
   }
 }
-
-
 
 class _SavedQuoteCard extends StatelessWidget {
   final Quote quote;
